@@ -1,0 +1,170 @@
+
+{% extends 'cat_hotel/components/base.html' %}
+{% block content %}
+{% load static %}
+<body>
+    <div class="container-fluid px-0 mb-5">
+        <div id="header-carousel" class="carousel slide" data-bs-ride="carousel">
+            <div class="carousel-inner">
+                <div class="carousel-item active">
+                    <img class="w-100" src="{% static 'cat_hotel/image/cat5.jpg' %}">
+                    <div class="carousel-caption">
+                        <div class="container">
+                            <div class="row justify-content-start">
+                                <div class="col-lg-8 text-start">
+                                    <p class="fs-4 text-white">Welcome to </p>
+                                    <h1 class="display-1 text-white mb-5 animated slideInRight">Cat Hotel</h1>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container-xxl py-5">
+        <div class="container">
+            <div class="row g-5 align-items-end">
+                <div class="col-lg-6">
+                    <div class="row g-2">
+                        <div class="col-6 position-relative wow fadeIn" data-wow-delay="0.7s">
+                            <div class="about-experience  rounded">
+                                <div class="col-6 wow fadeIn" data-wow-delay="0.1s">
+                                    <img class="img-fluid rounded" src="{% static 'cat_hotel/image/cat6.jpg' %}">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-6 wow fadeIn" data-wow-delay="0.1s">
+                            <img class="img-fluid rounded" src="{% static 'cat_hotel/image/cat6.jpg' %}">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6 wow fadeIn" data-wow-delay="0.5s">
+                    <p class="section-title bg-white text-start text-primary pe-3"></p>
+                    <h1 class="mb-4">About Us</h1>
+                    <p class="mb-4">ปัจจุบันคนนิยมเลี้ยงสัตว์เลี้ยงเพิ่มขึ้นเรื่อยๆ โดยเฉพาะแมว ทำให้มีผู้ประกอบการจำนวนไม่น้อยหันมาทำธุรกิจหรือเปิดร้านเกี่ยวกับสัตว์เลี้ยงเพิ่มขึ้นตามไปด้วย หนึ่งในนั้นก็คือ โรงแรมแมวเพื่อรับฝากแมว 
+                        แต่เนื่องจากการจองคิวต้องรอรอคิวค่อนข้างนานและไม่สามารถรู้ได้ว่าสามารถนำแมวไปรับฝากได้ในตอนไหนหรือในเวลาไหน
+                    </p>
+                    <p class="mb-4">ดังนั้นผู้พัฒนาจึงมีแนวคิดสร้างระบบบริหารการจองคิวรับฝากแมวในโรงแรมแมวขึ้นมา เพื่อช่วยแก้ปัญหาการรอคิวภายในร้านและอำนวยความสะดวกแก่ผู้ใช้ให้สามรถจองคิวได้ล่วงหน้าโดยไม่ต้องมารอต่อคิวภายในร้าน</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container-xxl py-5">
+        <div class="container">
+            <div class="text-center mx-auto wow fadeInUp" data-wow-delay="0.1s" style="max-width: 500px;">
+                <p class="section-title bg-white text-center text-primary px-3"></p>
+                <h1 class="mb-5">แนะนำการใช้งาน</h1>
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid bg-primary text-body copyright py-4">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12 text-center text-md-start">
+                    &copy; <a class="fw-semi-bold text-secondary" href="#">cat hotel</a>, by sunita.
+                </div>               
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+<style>
+    .carousel-caption {
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    align-items: center;
+    background: rgba(0, 0, 0, .1);
+    z-index: 1;
+}
+
+@media (max-width: 768px) {
+    #header-carousel .carousel-item {
+        position: relative;
+        min-height: 450px;
+    }
+
+    #header-carousel .carousel-item img {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+}
+
+.page-header {
+    background: url(../img/banner.jpg) center center no-repeat;
+    background-size: cover;
+}
+
+.page-header .breadcrumb-item+.breadcrumb-item::before {
+    color: var(--light);
+}
+
+.page-header .breadcrumb-item,
+.page-header .breadcrumb-item a {
+    font-size: 18px;
+    color: var(--light);
+}
+
+.section-title {
+    position: relative;
+    display: inline-block;
+    text-transform: uppercase;
+    font-weight: 600;
+}
+
+.section-title::before {
+    position: absolute;
+    content: "";
+    width: calc(100% + 80px);
+    height: 2px;
+    top: 5px;
+    left: -40px;
+    background: var(--primary);
+    z-index: -1;
+}
+
+.section-title::after {
+    position: absolute;
+    content: "";
+    width: calc(100% + 120px);
+    height: 2px;
+    bottom: 6px;
+    left: -60px;
+    background: var(--primary);
+    z-index: -1;
+}
+
+.section-title.text-start::before {
+    width: calc(100% + 40px);
+    left: 0;
+}
+
+.section-title.text-start::after {
+    width: calc(100% + 60px);
+    left: 0;
+}
+
+.about-experience {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    right: -45px;
+    bottom: -45px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.footer {
+    color: #B0B9AE;
+}
+
+</style>
+
+{% endblock %}

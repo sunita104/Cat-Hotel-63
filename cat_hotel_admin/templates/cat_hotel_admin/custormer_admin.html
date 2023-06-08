@@ -1,0 +1,79 @@
+{% extends 'cat_hotel_admin/components/base_booking_information.html' %}
+{% block booking_information %}
+<div class="col-xl-10 col-lg-7 mb-4 ml-3">
+  <div class="d-flex justify-content-end mb-3">
+    <form class="form-inline">
+      <input type="text" class="form-control" placeholder="Search">
+      <button type="submit" class="btn btn-primary ml-2">Search</button>
+    </form>
+  </div>
+    <div class="card">
+      <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+        <h5 class="m-0 font-weight-bold text-primary">กำลังเข้าพัก</h5>
+      </div>
+      {% if bookings %}
+        <div class="table-responsive pd-3">
+          <table class="table align-items-center table-flush">
+            <thead class="thead-light">
+              <tr>
+                <th>ID</th>
+                <th>Room Number</th>
+                <th>Customer</th>
+                <th>วันที่เข้าฝาก</th>
+                <th>ฝากถึงวันที่</th>
+                <th>จำนวนแมว</th>
+                <th>ชื่อแมว</th>
+                <th>เบอร์ติดต่อ</th>
+                <th>ราคา/บาท</th>
+                <th>checkout</th>
+              </tr>
+            </thead>
+            {% for booking in bookings %}
+            <tbody>
+              <tr>
+                <td>{{ booking.id }}</td>
+                <td class="text-primary">{{ booking.room }}</td>
+                <td>{{ booking.customer }}</td>
+                <td>{{ booking.start_date }}</td>
+                <td>{{ booking.end_date }}</td>
+                <td>{{ booking.cat }}</td>
+                <td>{{ booking.cat_name }}</td>
+                <td>{{ booking.phone_number }}</td>
+                <td>{{ booking.room.price }}</td>
+                <td>
+                  <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#confirmBookingModal">ยืนยัน</button>
+                </td>
+                <div class="modal fade" id="confirmBookingModal" tabindex="-1" role="dialog" aria-labelledby="confirmBookingModalLabel" aria-hidden="true">
+                  <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title" id="confirmBookingModalLabel">ยืนยันการจอง</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                        </button>
+                      </div>
+                      <div class="modal-body">
+                        <p>คุณแน่ใจหรือไม่ว่าต้องการยืนยันการเช็คเอ้าท์นี้</p>
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">ยกเลิก</button>
+                        <a href="{% url 'end_stay' booking.id  %}" class="btn btn-primary">ยืนยัน</a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </tr>
+            </tbody>
+            {% endfor %}
+          </table>
+        </div>
+      {% else %}
+        <div class="alert alert-warning mt-3" role="alert">
+          ไม่มีประวัติการจอง
+        </div>
+      {% endif %}
+    </div>
+    <div class="card-footer"></div>
+  </div>
+</div>
+{% endblock %}

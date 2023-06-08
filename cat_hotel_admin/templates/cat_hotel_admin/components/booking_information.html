@@ -1,0 +1,295 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Cat_hotel</title>
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+	  <link href="https://fonts.googleapis.com/css2?family=Mitr:wght@300&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+	<style type="text/css">
+		body{
+			font-family: 'Mitr', sans-serif;
+		}
+	</style>
+
+<body id="page-top">
+    <div id="wrapper">
+        <ul class="navbar-nav sidebar sidebar-light accordion" id="accordionSidebar">
+            <a class=" d-flex align-items-center justify-content-center">
+              <h4 class="sidebar-brand-text mx-3">ข้อมูลการจอง</h4> 
+            </a>
+            <hr class="sidebar-divider">
+            <li class="nav-item">
+              <a class="nav-link collapsed" href="{% url 'booking_admin' %}" >
+                <h6>คำขอการจอง</h6>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link collapsed" href="{% url 'confirmed_booking_request' %}" >
+                <h6>คำขอการจองที่ยืนยัน</h6>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link collapsed" href="{% url 'currently_staying' %}" >
+                <h6>กำลังเข้าพัก</h6>
+              </a>
+            </li>
+            <li class="nav-item">
+               <a class="nav-link collapsed" href="{% url 'booking_history' %}" >
+                 <h6>ประวัติการจอง</h6>
+               </a>
+            </li> 
+            <hr class="sidebar-divider">     
+        </ul>
+    </div>
+</body>
+
+<style>
+    #wrapper {
+      display: -webkit-box;
+      display: -ms-flexbox;
+      display: flex
+    }
+    
+    #wrapper #content-wrapper {
+      background-color: #fafdfb;
+      width: 100%;
+      overflow-x: hidden
+    }
+    
+    #wrapper #content-wrapper #content {
+      -webkit-box-flex: 1;
+      -ms-flex: 1 0 auto;
+      flex: 1 0 auto
+    }
+    
+    @media (max-width:768px) {
+      #container-wrapper {
+          min-width: 100vw
+        }
+    
+      .sidebar.toggled {
+          width: 100vw !important;
+          transition: all .3s ease-in-out;
+          -webkit-transition: all .3s ease-in-out
+      }
+    
+      .sidebar.toggled .nav-item {
+          margin-left: -1rem;
+          position: relative;
+          margin-bottom: -15px
+      }
+    
+      .sidebar.toggled .nav-item .nav-link {
+          display: block;
+          width: 100%;
+          text-align: left;
+          padding: 1rem;
+          width: 14rem
+      }
+    
+      .sidebar.toggled .nav-item .nav-link i {
+          font-size: .85rem;
+          margin-top: .4rem;
+          margin-right: .5rem
+      }
+    
+      .sidebar.toggled .nav-item .nav-link span {
+          font-size: .85rem;
+          display: inline
+      }
+    
+      .sidebar.toggled .nav-item.active .nav-link {
+          font-weight: 700
+      }
+    
+      .sidebar.toggled .nav-item .nav-link[data-toggle=collapse]::after {
+          width: 1rem;
+          text-align: center;
+          float: right;
+          vertical-align: 0;
+          border: 0;
+          font-weight: 900;
+          content: '\f107';
+          font-family: 'Font Awesome 5 Free'
+      }
+    
+      .sidebar.toggled .nav-item .nav-link[data-toggle=collapse].collapsed::after {
+          content: '\f105'
+      }
+    
+      .sidebar.toggled .nav-item .collapse {
+          position: relative;
+          padding-left: 1rem;
+          left: 0;
+          z-index: 1;
+          top: 0;
+          -webkit-transition: height .15s ease;
+          transition: height .15s ease
+      }
+    
+      .sidebar.toggled .nav-item .collapse .collapse-inner {
+          border-radius: .35rem;
+          -webkit-box-shadow: 0 .15rem 1.75rem 0 rgba(58, 59, 69, .15);
+          box-shadow: 0 .15rem 1.75rem 0 rgba(58, 59, 69, .15)
+      }
+    
+      .sidebar.toggled .nav-item .collapse,
+      .sidebar.toggled .nav-item .collapsing {
+          margin: 0 1rem
+      }
+    
+      .sidebar.toggled .nav-item .collapse .collapse-inner,
+      .sidebar.toggled .nav-item .collapsing .collapse-inner {
+          padding: .5rem 0;
+          min-width: 10rem;
+          font-size: .85rem;
+          margin: 0 0 1rem 0
+      }
+    
+      .sidebar.toggled .nav-item .collapse .collapse-inner .collapse-header,
+      .sidebar.toggled .nav-item .collapsing .collapse-inner .collapse-header {
+          margin: 0;
+          white-space: nowrap;
+          padding: .5rem 1.5rem;
+          text-transform: uppercase;
+          font-weight: 800;
+          font-size: .65rem;
+          color: #b7b9cc
+      }
+    
+      .sidebar.toggled .nav-item .collapse .collapse-inner .collapse-item,
+      .sidebar.toggled .nav-item .collapsing .collapse-inner .collapse-item {
+          padding: .5rem 1rem;
+          margin: 0 .5rem;
+          display: block;
+          color: #3a3b45;
+          text-decoration: none;
+          border-radius: .35rem;
+          white-space: nowrap
+      }
+    
+      .sidebar.toggled .nav-item .collapse .collapse-inner .collapse-item:hover,
+      .sidebar.toggled .nav-item .collapsing .collapse-inner .collapse-item:hover {
+          background-color: #eaecf4;
+          transition: all .3s ease-in-out;
+          -webkit-transition: all .3s ease-in-out
+      }
+    
+      .sidebar.toggled .nav-item .collapse .collapse-inner .collapse-item:active,
+      .sidebar.toggled .nav-item .collapsing .collapse-inner .collapse-item:active {
+          background-color: #dddfeb
+      }
+    
+      .sidebar.toggled .nav-item .collapse .collapse-inner .collapse-item.active,
+      .sidebar.toggled .nav-item .collapsing .collapse-inner .collapse-item.active {
+          color: #3f51b5;
+          font-weight: 800
+      }
+    
+      .sidebar.toggled .sidebar-brand {
+          height: 4.375rem;
+          text-decoration: none;
+          font-size: 1rem;
+          font-weight: 800;
+          padding: 1.5rem 1rem;
+          text-align: center;
+          letter-spacing: .05rem;
+          z-index: 1
+      }
+    }
+    
+    .sidebar hr.sidebar-divider {
+      margin: 1rem 0 1rem 0
+    }
+    
+    .sidebar.toggled hr.sidebar-divider {
+      margin: 0 0 1rem 0
+    }
+    
+    @media (max-width:768px) {
+      #container-wrapper {
+          min-width: 100vw
+      }
+      .sidebar.toggled hr.sidebar-divider {
+          margin: 1rem 0 1rem 0
+      }
+      .sidebar hr.sidebar-divider {
+          margin: 1rem 0 1rem 0
+      }
+    }
+    
+    .sidebar-light hr.sidebar-divider {
+      border-top: 1px solid #eaecf4
+    }
+    
+    .sidebar-dark hr.sidebar-divider {
+      border-top: 1px solid rgba(255, 255, 255, .15)
+    }
+    
+    .sidebar .nav-item.dropdown .dropdown-toggle::after,
+    .topbar .nav-item.dropdown .dropdown-toggle::after {
+      width: 1rem;
+      text-align: center;
+      float: right;
+      vertical-align: 0;
+      border: 0;
+      font-weight: 900;
+      content: '\f105';
+      font-family: 'Font Awesome 5 Free'
+    }
+    
+    .sidebar .nav-item.dropdown.show .dropdown-toggle::after,
+    .topbar .nav-item.dropdown.show .dropdown-toggle::after {
+      content: '\f107'
+    }
+    
+    .sidebar .nav-item .nav-link,
+    .topbar .nav-item .nav-link {
+      position: relative
+    }
+    
+    .topbar .nav-item .nav-link {
+      height: 4.375rem;
+      display: -webkit-box;
+      display: -ms-flexbox;
+      display: flex;
+      -webkit-box-align: center;
+      -ms-flex-align: center;
+      align-items: center;
+      padding: 0 .75rem
+    }
+    
+    .topbar .nav-item .nav-link:focus {
+      outline: 0
+    }
+    
+    .topbar .nav-item:focus {
+      outline: 0
+    }
+    
+    .sidebar .nav-item .nav-link {
+      display: block;
+      width: 100%;
+      text-align: left;
+      padding: 1rem;
+      width: 14rem
+    }
+    
+    .sidebar .nav-item .nav-link i {
+      font-size: .85rem;
+      margin-right: .25rem
+    }
+    
+    .sidebar .nav-item .nav-link span {
+      font-size: .85rem;
+      display: inline
+    }
+    
+    .sidebar .nav-item.active .nav-link {
+      font-weight: 800
+    }
+</style>

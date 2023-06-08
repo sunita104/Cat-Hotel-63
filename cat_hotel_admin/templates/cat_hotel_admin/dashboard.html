@@ -1,0 +1,245 @@
+{% extends 'cat_hotel_admin/components/base.html' %}
+{% block content %}
+<div id="content">
+<div class="container-fluid" id="container-wrapper">
+    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+      <h1 class="h3 mb-0 text-gray-800">Rooms</h1>
+    </div>
+    <div class="row mb-3">
+      <!-- Earnings (Monthly) Card Example -->
+      <div class="col-xl-3 col-md-6 mb-4">
+        <div class="card h-100 bg-danger">
+          <div class="card-body">
+            <div class="row align-items-center">
+              <div class="col mr-2">
+                <div class="text-xs font-weight-bold text-white mb-1">กำลังเข้าพัก</div>
+                <div class="h5 mb-0 font-weight-bold text-white">--ห้อง</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Earnings (Annual) Card Example -->
+      <div class="col-xl-3 col-md-6 mb-4">
+        <div class="card h-100 bg-success">
+          <div class="card-body">
+            <div class="row align-items-center">
+              <div class="col mr-2">
+                <div class="text-xs font-weight-bold text-white mb-1">ว่าง</div>
+                <div class="h5 mb-0 font-weight-bold text-white">--ห้อง</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-xl-3 col-md-6 mb-4">
+        <div class="card h-100 bg-warning">
+          <div class="card-body">
+            <div class="row align-items-center">
+              <div class="col mr-2">
+                <div class="text-xs font-weight-bold text-white mb-1">จำนวนห้องพักทั้งหมด</div>
+                <div class="h5 mb-0 font-weight-bold text-white">--ห้อง</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+</div>
+</div>
+<hr width="1350">
+<div class="container mt-5 mb-3 ml-5">
+    <div class="row">
+        <div class="col-md-3">
+            <div class="card p-3 mb-2">
+                <div class="d-flex justify-content-between">
+                    <div class="d-flex flex-row align-items-center">
+                        <div class="ms-2 c-details">
+                            <h6 class="mb-0">สถานะ</h6> <span>ห้อง --</span>
+                            <br>
+                            <br>
+                            <a>แสดงรายละเอียด</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card p-3 mb-2">
+                <div class="d-flex justify-content-between">
+                    <div class="d-flex flex-row align-items-center">
+                        <div class="ms-2 c-details">
+                            <h6 class="mb-0">สถานะ</h6> <span>ห้อง --</span>
+                            <br>
+                            <br>
+                            <a>แสดงรายละเอียด</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card p-3 mb-2">
+                <div class="d-flex justify-content-between">
+                    <div class="d-flex flex-row align-items-center">
+                        <div class="ms-2 c-details">
+                            <h6 class="mb-0">สถานะ</h6> <span>ห้อง --</span>
+                            <br>
+                            <br>
+                            <a>แสดงรายละเอียด</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card p-3 mb-2">
+                <div class="d-flex justify-content-between">
+                    <div class="d-flex flex-row align-items-center">
+                        <div class="ms-2 c-details">
+                            <h6 class="mb-0">สถานะ</h6> <span>ห้อง --</span>
+                            <br>
+                            <br>
+                            <a>แสดงรายละเอียด</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        
+
+    </div>
+</div>
+<style>
+.container,
+.container-fluid,
+.container-login {
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
+}
+
+
+.container-fluid{
+    margin-left: 52px;
+}
+
+
+@-webkit-keyframes growIn {
+  0% {
+      -webkit-transform: scale(.9);
+      transform: scale(.9);
+      opacity: 0
+  }
+
+  100% {
+      -webkit-transform: scale(1);
+      transform: scale(1);
+      opacity: 1
+  }
+}
+
+@keyframes growIn {
+  0% {
+      -webkit-transform: scale(.9);
+      transform: scale(.9);
+      opacity: 0
+  }
+
+  100% {
+      -webkit-transform: scale(1);
+      transform: scale(1);
+      opacity: 1
+  }
+}
+
+.animated--grow-in,
+.sidebar .nav-item .collapse {
+  -webkit-animation-name: growIn;
+  animation-name: growIn;
+  -webkit-animation-duration: .2s;
+  animation-duration: .2s;
+  -webkit-animation-timing-function: transform cubic-bezier(.18, 1.25, .4, 1), opacity cubic-bezier(0, 1, .4, 1);
+  animation-timing-function: transform cubic-bezier(.18, 1.25, .4, 1), opacity cubic-bezier(0, 1, .4, 1)
+}
+
+@-webkit-keyframes fadeIn {
+  0% {
+      opacity: 0
+  }
+
+  100% {
+      opacity: 1
+  }
+}
+
+@keyframes fadeIn {
+  0% {
+      opacity: 0
+  }
+
+  100% {
+      opacity: 1
+  }
+}
+
+.border-left-light {
+  border-left: .25rem solid #f8f9fc !important
+}
+
+.border-bottom-light {
+  border-bottom: .25rem solid #f8f9fc !important
+}
+
+.border-left-dark {
+  border-left: .25rem solid #5a5c69 !important
+}
+
+.border-bottom-dark {
+  border-bottom: .25rem solid #5a5c69 !important
+}
+
+.progress-sm {
+  height: .5rem
+}
+
+.rotate-15 {
+  -webkit-transform: rotate(15deg);
+  transform: rotate(15deg)
+}
+
+.rotate-n-15 {
+  -webkit-transform: rotate(-15deg);
+  transform: rotate(-15deg)
+}
+
+
+.c-details span {
+    font-weight: 300;
+    font-size: 13px
+}
+
+
+.badge span {
+    background-color: #fffbec;
+    width: 60px;
+    height: 25px;
+    padding-bottom: 3px;
+    border-radius: 5px;
+    display: flex;
+    color: #fed85d;
+    justify-content: center;
+    align-items: center
+}
+
+.progress {
+    height: 10px;
+    border-radius: 10px
+}
+
+.progress div {
+    background-color: red
+}
+
+</style>
+{% endblock %}

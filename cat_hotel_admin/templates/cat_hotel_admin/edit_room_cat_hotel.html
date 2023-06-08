@@ -1,0 +1,81 @@
+{% extends 'cat_hotel_admin/components/base.html' %}
+{% block content %}
+{% load crispy_forms_tags %}
+
+<div class="container">
+    <div class="card p-4 mt-5 mb-5 ">
+        <form method="POST">
+            {% csrf_token %}
+        <div class="">
+            <div class="col-12 mb-4">
+                <h4 class="text-primary">แก้ไขห้องพักแมว</h4>
+            </div>
+            <div class="col-lg-6 col-md-12 ">
+                <div class="form-floating">
+                    <h6>{{form.room_number|as_crispy_field}}</h6>
+                </div>
+            </div>
+            <br>
+            <div class="col-lg-6 col-md-12 ">
+                <div class="form-floating">
+                    <h6>{{ form.description|as_crispy_field }}</h6>            
+                </div>
+            </div>
+            <div class="col-lg-6 col-md-12 mt-2">
+                <div class="form-floating">
+                    <h6>{{form.price|as_crispy_field}}</h6>
+            </div>
+            </div>
+            <div class="col-12 mt-4 ">
+                <button class="btn btn-danger text-uppercase" type="button">ยกเลิก</button>
+                <button class="btn btn-warning text-uppercase" type="submit">ยืนยัน<i class="fa fa-plane ms-3"></i></button>
+            </div>
+            </form>
+        </div>
+    </div>
+</div>
+</form>
+<style>
+    :root{
+    --dark-color: #262727;
+    --color-fff: #FFFFFF;
+    --color-100: #F0F0F0;
+    --color-200: #EEEEEE;
+    --color-300: #E0E0E0;
+    --color-400: #BDBDBD;
+    --color-500: #525252;
+    --color-600: #464545;
+    --color-700: #363535;
+    --color-800: #252525;
+    --color-900: #181818;
+    --color-000: #000000;
+    --border-color: #e9e6e1;
+    --card-color: #f5f5f5;
+    --body-color: #f8f6f2;
+    --white-color: #ffffff;
+    --sidebar-color: #ffffff;
+
+    --primary-color: #2794eb;
+    --secondary-color: #00AC9A;
+}
+
+.form-control, .form-select {
+    border-color: var(--border-color);
+    color: var(--color-900);
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    font-size: 15px;
+}
+
+.btn.btn-primary {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+}
+
+.card{
+    background-color: var(--card-color);
+    border: 0;
+}
+</style>
+{% endblock %}

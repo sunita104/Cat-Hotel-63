@@ -1,0 +1,49 @@
+{% extends 'cat_hotel/components/base.html' %}
+
+{% block content %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.9.0/fullcalendar.css" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.9.0/fullcalendar.js"></script>
+
+<div class="container mt-5">
+  <div id='calendar'></div>
+</div>
+
+
+  <script>
+
+    $(document).ready(function() {
+
+        $('#calendar').fullCalendar({
+          
+          header: {
+            
+          left: 'prev, next, today',
+          center: 'title',
+          right: 'month,agendaWeek,agendaDay',
+      },
+            eventLimit: true,
+            displayEventTime: false,// allow "more" link when too many events
+            events: [
+                {% for i in all_booking %}
+                {
+                    title: "{{ i.room.room_number}}",
+                    start: '{{ i.start_date|date:"Y-m-d" }}',
+                    end: '{{ i.end_date|date:"Y-m-d"}}T23:59:00',
+                    allDay:  false ,
+                    textColor: '#fff',
+                    backgroundColor: 'orange'
+
+                },
+                {% endfor %}
+
+            ]
+        });
+
+    });
+
+</script>
+    
+{% endblock %}
+

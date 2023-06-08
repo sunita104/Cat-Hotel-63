@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cat Hotel Admin</title>
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+	<link href="https://fonts.googleapis.com/css2?family=Mitr:wght@300&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
+	<style type="text/css">
+		body{
+			font-family: 'Mitr', sans-serif;
+		}
+	</style>
+</head>
+<body>
+
+</body>
+</html>  
+<div class="Container ">
+<div class="card mt-5" style="background-color: #fff !important; border:solid 0px !important;">
+    <div class="upper">
+        <div class="row">
+            <div class="col-8 heading">
+                <h4><b>Cat_Hotel_Admin</b></h4>
+            </div>
+        </div>
+        <form id="form" method="POST">
+            {% csrf_token %}
+            <div id="alert" class="mt-1" role="alert">
+            </div>
+            <div class="form-element">
+                <span id="input-header">Username_admin</span>
+                <input type="user" id="username" name="username"
+                       placeholder="username">
+            </div>
+            <div class="form-element ">
+                <span id="input-header">password</span>
+                    <div class="d-flex align-items-center">
+                        <input type="password" name="password" id="password"
+                               placeholder="pass*****">
+                    </div>                
+            </div>
+            <div class="lower">
+                <button type="submit" class="btn btn-warning">Login</button>
+            </div>
+        </form>
+    </div>
+</div>
+</div>
+</form>
+<style>
+    
+
+body {
+
+
+    font-size: 14px;
+}
+a{
+    text-decoration: none;
+}
+.card {
+    margin: auto;
+    box-shadow: 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    width: 450px;
+}
+
+.alert {
+    padding: .5rem .5rem !important;
+}
+
+@media(max-width:768px) {
+    .card {
+        width: 90% !important;
+    }
+
+
+}
+
+.upper {
+    padding: 6vh 6vh 3vh 6vh;
+}
+
+.lower {
+    padding: 3vh 0 3vh;
+    text-align: center;
+}
+
+.heading {
+    display: flex;
+    align-items: center;
+    vertical-align: middle;
+}
+
+.heading p {
+    margin-bottom: 0;
+}
+
+input {
+    border: 1px solid rgba(0, 0, 0, 0.137);
+    padding: 0.75rem;
+    outline: none;
+    width: 100%;
+    min-width: unset;
+    background: rgba(151, 151, 151, 0.212) !important;
+}
+.eye{
+    background: rgba(151, 151, 151, 0.212) !important;
+    padding: 1rem;
+
+}
+.row>*{
+    padding-right: 0 !important;
+    padding-left: 0 !important;
+
+}
+.form-element {
+    margin: 3vh 0;
+}
+
+form .col-3,
+.col-9,
+.col-1,
+.col--11 {
+    padding: 0;
+    width: min-content;
+}
+
+form .col-11 {
+    padding-left: 10px;
+}
+
+form .col-1 {
+    display: flex;
+    align-items: center;
+    color: red;
+    font-size: 3vh;
+    justify-content: center;
+}
+
+#code {
+    text-align: center;
+}
+
+form .row {
+    margin: 0;
+}
+
+hr {
+    margin: 0;
+    border-top: 2px solid rgba(0, 0, 0, .1);
+}
+
+#input-header {
+    color: grey;
+}
+
+.invalid {
+    color: grey;
+    line-height: 1.2;
+}
+
+.btn {
+    width: 50%;
+
+    color: white;
+    padding: 1.5vh 0;
+}
+
+.btn:focus {
+    box-shadow: none;
+    outline: none;
+    box-shadow: none;
+    color: white;
+    -webkit-box-shadow: none;
+    transition: none;
+}
+
+.btn:hover {
+    color: white;
+}
+
+input:focus::-webkit-input-placeholder {
+    color: transparent;
+}
+
+input:focus:-moz-placeholder {
+    color: transparent;
+}
+
+/* FF 4-18 */
+input:focus::-moz-placeholder {
+    color: transparent;
+}
+
+/* FF 19+ */
+input:focus:-ms-input-placeholder {
+    color: transparent;
+}
+
+input{
+    border: none;
+}
+/* IE 10+ */
+</style>

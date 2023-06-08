@@ -1,0 +1,57 @@
+{% extends 'cat_hotel_admin/components/base_booking_information.html' %}
+{% block booking_information %}
+
+<div class="col-xl-10 col-lg-7 mb-4 ml-3">
+  <div class="d-flex justify-content-end mb-3">
+    <form class="form-inline">
+      <input type="text" class="form-control" placeholder="Search">
+      <button type="submit" class="btn btn-primary ml-2">Search</button>
+    </form>
+  </div>
+  <div class="card">
+    <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+      <h5 class="m-0 font-weight-bold text-primary">ประวัติการจอง</h5>
+    </div>
+    {% if booking_history %}
+    <div class="table-responsive pd-3">
+      <table class="table align-items-center table-flush">
+        <thead class="thead-light">
+          <tr>
+            <th>ID</th>
+            <th>Room Number</th>
+            <th>Customer</th>
+            <th>วันที่เข้าฝาก</th>
+            <th>ฝากถึงวันที่</th>
+            <th>จำนวนแมว</th>
+            <th>เบอร์ติดต่อ</th>
+            <th>ราคา/บาท</th>
+            <th>status</th>
+          </tr>
+        </thead>
+        {% for booking_history in booking_history %}
+        <tbody>
+          <tr>
+            <td>{{ booking_history.id }}</td>
+            <td class="text-primary">{{ booking_history.room }}</td>
+            <td>{{ booking_history.customer_b }}</td>
+            <td>{{ booking_history.start_date}}</td>
+            <td>{{ booking_history.end_date }}</td>
+            <td>{{ booking_history.cat }}</td>
+            <td>{{ booking_history.cat_name }}</td>
+            <td>{{ booking_historyphone_number }}</td>
+            <td>{{ booking_history.room.price }}</td>
+          </tr>
+        </tbody>
+        {% endfor %}
+      </table>
+      {% else %}
+      <div class="alert alert-warning mt-3" role="alert">
+        ไม่มีประวัติการจอง
+      </div>
+      {% endif %}
+    </div>
+    <div class="card-footer"></div>
+  </div>
+</div>
+
+{% endblock %}
