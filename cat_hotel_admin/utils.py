@@ -3,6 +3,7 @@ from calendar import HTMLCalendar
 from cat_hotel_admin.models import *
 from cat_hotel.models import *
 
+'''
 class Calendar(HTMLCalendar): # ใช้ html calendar ที่มีอยู่ในโมดูล calendar python
     def __init__(self, year=None, month=None): # กำหนด year, month จากพารามิเตอร์ี่รับเข้ามา
 	    self.year = year
@@ -38,6 +39,7 @@ class Calendar(HTMLCalendar): # ใช้ html calendar ที่มีอยู
         for week in self.monthdays2calendar(self.year, self.month):
             cal += f'{self.formatweek(week, events)}\n'
         return cal
+'''
 
 
 

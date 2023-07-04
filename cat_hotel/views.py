@@ -8,6 +8,9 @@ from django.utils import timezone
 from cat_hotel.models import *
 from datetime import datetime, timedelta, date
 from cat_hotel_admin.views import calendar_booking
+from django.contrib.auth import authenticate, login, logout
+from django.contrib import messages
+from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 
 # Create your views here.
 
@@ -19,6 +22,43 @@ def about(requset):
 
 def profile(requset):
     return render(requset, 'cat_hotel/profile.html')
+
+def edit_profile(requset):
+    return render(requset, 'cat_hotel/edit_profile.html')
+
+def login_view(request):
+    if request.method == 'POST':
+        form = LoginForm(request.POST)
+        if form.is_valid():
+            username = form.cleaned_data['username']
+            password = form.cleaned_data['password']
+            user = authenticate(request, username=username, password=password)
+            if user is not None:
+                login(request, user)
+                return redirect('home')  # Replace 'home' with your desired URL name for the home page
+            else:
+                form.add_error(None, 'ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง')
+    else:
+        form = LoginForm()
+
+    return render(request, 'cat_hotel/login.html', {'form': form})
+
+def logout_view(request):
+    logout(request)
+    return redirect('home')  
+
+def register(request):
+    if request.method == 'POST':
+        form = RegisterForm(request.POST)
+        if form.is_valid():
+            form.save()
+            username = form.cleaned_data.get('username')
+            messages.success(request, f'คุณ {username} สมัครสามชิกสำเร็จ')
+            return redirect('login')  
+    else:
+        form = RegisterForm()
+
+    return render(request, 'cat_hotel/register.html', {'form': form})
 
 
 def cat_hotel(request, room_number, check_in_date, check_out_date):
@@ -130,9 +170,11 @@ def edit(request):
 def success(request):
     return render(request, 'success.html')
 
-
 def edit_completed(requset):
     return render(requset,'cat_hotel/edit_completed.html')
+
+def booking_history_cathotel(requset):
+    return render(requset,'cat_hotel/booking_history_cathotel.html')
 
 
 

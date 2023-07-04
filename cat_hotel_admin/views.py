@@ -10,13 +10,30 @@ from cat_hotel.models import *
 from cat_hotel_admin.forms import *
 from datetime import datetime, timedelta, date
 from itertools import groupby
+from django.utils import timezone
 from cat_hotel_admin.forms import *
 from django.template.loader import render_to_string
 import calendar
 from django.views import generic
-from cat_hotel_admin.utils import Calendar
+from django.core.exceptions import ObjectDoesNotExist
+#from cat_hotel_admin.utils import Calendar
 from django.utils.safestring import mark_safe
 from django.db.models import Q
+from cat_hotel_admin.models import *
+from django.db.models import Sum
+from django.http import JsonResponse
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from django.views.generic import TemplateView
+from chartjs.views.lines import BaseLineChartView
+from rest_framework import viewsets
+from rest_framework.response import Response
+from rest_framework import status
+from rest_framework.decorators import action
+import matplotlib.pyplot as plt
+import pandas as pd
+import json
+
 
 # Create your views here.
 
@@ -36,9 +53,6 @@ def admin_logout(request):
     if request.method == 'POST':
         logout(request)
         return redirect('admin_login')
-
-def dashboard(requset):
-    return render(requset, 'cat_hotel_admin/dashboard.html')
 
 def manage_cat_hotel_admin(request):
     if request.method == 'POST':
@@ -194,6 +208,56 @@ def end_stay(request, booking_id):
 
 def calendar_admin(requset):
     return render(requset, 'cat_hotel_admin/calendar_admin.html')
+
+def calculate_income_summary():
+    today = date.today()
+    day_income = BookingHistory.objects.filter(start_date=today).aggregate(Sum('room__price'))['room__price__sum'] or 0.0
+    month_income = BookingHistory.objects.filter(start_date__month=today.month).aggregate(Sum('room__price'))['room__price__sum'] or 0.0
+    year_income = BookingHistory.objects.filter(start_date__year=today.year).aggregate(Sum('room__price'))['room__price__sum'] or 0.0
+    total_income = BookingHistory.objects.aggregate(Sum('room__price'))['room__price__sum'] or 0.0
+
+    income_summary, created = IncomeSummary.objects.get_or_create(date=today)
+    income_summary.day_income = day_income
+    income_summary.month_income = month_income
+    income_summary.year_income = year_income
+    income_summary.total_income = total_income
+    income_summary.save()
+
+    return income_summary
+
+def dashboard(request):
+    all_months = list(calendar.month_name)[1:]
+    income_summaries = IncomeSummary.objects.order_by('date')
+
+    selected_year = request.GET.get('year')
+    if selected_year:
+        income_summaries = income_summaries.filter(date__year=selected_year)
+
+    monthly_income_data = [0] * 12
+    months = []
+
+    for month in range(1, 13):
+        matching_summary = income_summaries.filter(date__month=month).last()
+        if matching_summary:
+            monthly_income_data[month - 1] = matching_summary.month_income
+        months.append(all_months[month - 1])
+
+    total_income = income_summaries.last().year_income if income_summaries.exists() else 0
+    income_summary = calculate_income_summary()
+
+    context = {
+        'income_summary': income_summary,  
+        'monthly_income_data': json.dumps(monthly_income_data),
+        'months': json.dumps(months),
+        "selected_year": selected_year,
+        'total_income': total_income,
+    }
+
+    return render(request, 'cat_hotel_admin/dashboard.html', context=context)
+
+
+
+
 
 
 '''

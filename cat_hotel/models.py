@@ -1,20 +1,11 @@
 from django.db import models
 from cat_hotel_admin.models import *
 import datetime
+from django.contrib.auth.models import User
 # Create your models here.
 
-class Customer(models.Model):
-    name = models.CharField(max_length=50, null=True, blank=False)
-    username = models.CharField(max_length=50, null=True, blank=False)
-    password = models.CharField(max_length=7, null=True, blank=False)
-
-    def __str__(self):
-        return self.name
-
-
 class Booking(models.Model):
-
-    customer = models.ForeignKey(Customer, on_delete=models.CASCADE, null=True, blank=False)
+    customer = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=False)
     room = models.ForeignKey(Room, on_delete=models.CASCADE, null=True, blank=False)
     start_date = models.DateField(null=True, blank=False)
     end_date = models.DateField(null=True, blank=False)
@@ -35,20 +26,18 @@ class Booking(models.Model):
             self.room.available = False
         self.room.save()
         super(Booking, self).save(*args, **kwargs)
-    
 
 class Review(models.Model):
-
     RATING_CHOICES = (
-        (1,'1'),
-        (2,'2'),
-        (3,'3'),
-        (4,'4'),
-        (5,'5'),
+        (1, '1'),
+        (2, '2'),
+        (3, '3'),
+        (4, '4'),
+        (5, '5'),
     )
 
     room = models.ForeignKey(Room, on_delete=models.CASCADE, null=True, blank=False)
-    customer = models.ForeignKey(Customer, on_delete=models.CASCADE, null=True, blank=False)
+    customer = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=False)
     comment = models.CharField(max_length=255, null=True, blank=False)
     rating = models.IntegerField(choices=RATING_CHOICES, null=True, blank=False)
     created_at = models.DateTimeField(auto_now_add=True, null=True, blank=False)
@@ -57,12 +46,12 @@ class Review(models.Model):
         unique_together = ('customer', 'room')
 
 class BookingHistory(models.Model):
-    customer_b = models.ForeignKey(Customer, on_delete=models.CASCADE, null=True, blank=False)
+    customer_b = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=False)
     room = models.ForeignKey(Room, on_delete=models.CASCADE, null=True, blank=False)
     start_date = models.DateField(null=True, blank=False)
     end_date = models.DateField(null=True, blank=False)
     cat_name = models.CharField(max_length=10, null=True, blank=False)
-    cat = models.IntegerField( null=True, blank=False)
+    cat = models.IntegerField(null=True, blank=False)
     phone_number = models.CharField(max_length=10, null=True, blank=False)
     checked_out = models.BooleanField(default=False, null=True, blank=False)
 

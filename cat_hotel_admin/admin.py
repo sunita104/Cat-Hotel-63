@@ -4,3 +4,4 @@ from django.contrib import admin
 
 from cat_hotel_admin.models import *
 
+admin.site.register(IncomeSummary)

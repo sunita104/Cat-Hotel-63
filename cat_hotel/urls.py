@@ -3,6 +3,7 @@ from . import views
 from django.conf import settings
 from django.conf.urls.static import static
 
+
 urlpatterns = [
     path('', views.home, name='home'),
     path('about', views.about, name='about'),
@@ -14,6 +15,13 @@ urlpatterns = [
     path('success/', views.success, name='success'),  
     path('cat_hotels/', views.search_available_rooms, name='search_available_rooms'),
     path('calendar/', views.calendar, name='calendar'),
+    path('login/', views.login_view, name='login'),
+    path('logout/', views.logout_view, name='logout'),
+    path('register/', views.register, name='register'),
+    path('profile/', views.profile, name='profile'),
+    path('edit_profile/', views.edit_profile, name='edit_profile'),
+    path('booking_history_cathotel/', views.booking_history_cathotel, name='booking_history_cathotel'),
+
 ]
 
 if settings.DEBUG:

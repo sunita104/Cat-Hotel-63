@@ -37,38 +37,20 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "rest_framework",
+    "chartjs",
     "crispy_forms", 
-    "django.contrib.sites",
-    "login_page",
-    "allauth",
-    "allauth.account",
-    "allauth.socialaccount",
-    "allauth.socialaccount.providers.google",
+    'allauth',
+    'allauth.account',
+
+    
 
     #App
-    "cat_hotel",
+    "cat_hotel.apps.CatHotelConfig",
     "cat_hotel_admin",
 ]
 
-AUTHENTICATION_BACKENDS = (
- "django.contrib.auth.backends.ModelBackend",
- "allauth.account.auth_backends.AuthenticationBackend",
-)
 
-SITE_ID = 2
-LOGIN_REDIRECT_URL = '/'
-
-SOCIALACCOUNT_PROVIDERS = {
-    'google': {
-        'SCOPE': [
-            'profile',
-            'email',
-        ],
-        'AUTH_PARAMS': {
-            'access_type': 'online',
-        }
-    }
-}
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
@@ -83,6 +65,12 @@ MIDDLEWARE = [
 ROOT_URLCONF = "myproject.urls"
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
+
+STATIC_URL = '/static/'
+import os
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'cat_hotel_admin/static'),
+]
 
 TEMPLATES = [
     {
@@ -152,3 +140,7 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 import os
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+LOGIN_REDIRECT_URL = 'home'
+
+LOGIN_URL = 'login'

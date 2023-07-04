@@ -1,3 +1,4 @@
+from rest_framework import serializers
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
@@ -29,3 +30,9 @@ class EditRoomForm(forms.ModelForm):
             'price': 'ราคา/บาท',
             'image': 'รูปห้อง'
         }
+
+class IncomeSummarySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = IncomeSummary
+        fields = ('id', 'date', 'day_income', 'month_income', 'year_income', 'total_income')
+

@@ -1,0 +1,18 @@
+{% load crispy_forms_tags %}
+<head>
+    <title>Registration</title>
+</head>
+<body>
+    <h2>Registration</h2>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.first_name|as_crispy_field }}
+        {{ form.last_name|as_crispy_field }}
+        {{ form.email|as_crispy_field }}
+        {{ form.username|as_crispy_field }}
+        {{ form.password1|as_crispy_field }}
+        {{ form.password2|as_crispy_field }}
+
+        <button type="submit">Register</button>
+    </form>
+</body>
