@@ -59,37 +59,43 @@
                           </tr>
                         </thead>
                         {% for managed_cat_hotel in managed_cat_hotels %}
-                        <tbody>
-                          <tr>
+                        <tr>
                             <td>{{ managed_cat_hotel.room_number }}</td>
                             <td>{{ managed_cat_hotel.description }}</td>
                             <td>{{ managed_cat_hotel.price }}</td>
-                            <td><a href="{% url 'edit_room' managed_cat_hotel.pk %}" class="btn btn-sm btn-warning">แก้ไข</a></td>
-                            <td><button class="btn btn-sm btn-danger" data-toggle="modal" data-target="#deleteRoomModal" >ลบ</button></td>
-                            <div class="modal fade" id="deleteRoomModal{{ room.pk }}" tabindex="-1" role="dialog" aria-labelledby="deleteRoomModalLabel{{ room.pk }}" aria-hidden="true">
-                                <div class="modal-dialog" role="document">
-                                  <div class="modal-content">
+                            <td>
+                                <a href="{% url 'edit_room' managed_cat_hotel.id %}" class="btn btn-sm btn-warning">แก้ไข</a>
+                            </td>
+                            <td>
+                                <button class="btn btn-sm btn-danger" data-toggle="modal"
+                                    data-target="#deleteRoomModal{{ managed_cat_hotel.id }}">ลบ</button>
+                            </td>
+                        </tr>
+                        <div class="modal fade" id="deleteRoomModal{{ managed_cat_hotel.id }}" tabindex="-1" role="dialog"
+                            aria-labelledby="deleteRoomModalLabel{{ managed_cat_hotel.id }}" aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
                                     <div class="modal-header">
-                                      <h5 class="modal-title" id="deleteRoomModalLabel{{ room.pk }}">ลบห้อง {{ room.room_number }}</h5>
-                                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                      </button>
+                                        <h5 class="modal-title" id="deleteRoomModalLabel{{ managed_cat_hotel.id }}">
+                                            ลบห้อง {{ managed_cat_hotel.room_number }}</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
                                     </div>
                                     <div class="modal-body">
-                                      คุณแน่ใจที่จะลบห้องนี้?
-                                    </div>
-                                    <div class="modal-footer">
-                                      <button type="button" class="btn btn-secondary" data-dismiss="modal">ยกเลิก</button>
-                                      <form action="{% url 'delete_room' managed_cat_hotel.pk %}" method="post">
-                                        {% csrf_token %}
-                                        <input type="hidden" name="room_id" value="{{ room.pk }}">
-                                        <button type="submit" class="btn btn-danger">ลบ</button>
-                                      </form>
-                                    </div>
-                                  </div>
+                                        คุณแน่ใจที่จะลบห้องนี้?
+                                      </div>
+                                      <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">ยกเลิก</button>
+                                        <form action="{% url 'delete_room' managed_cat_hotel.pk %}" method="post">
+                                          {% csrf_token %}
+                                          <input type="hidden" name="room_id" value="{{ managed_cat_hotel.pk}}">
+                                          <button type="submit" class="btn btn-danger">ลบ</button>
+                                        </form>
+                                      </div>
                                 </div>
-                              </div>
-                        </tbody>
+                            </div>
+                        </div>
                         {% endfor %}
                         </table>
                     </div>

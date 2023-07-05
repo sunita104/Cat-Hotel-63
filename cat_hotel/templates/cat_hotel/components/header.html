@@ -43,16 +43,16 @@
                 <i class="bi bi-person-circle mr-1"></i> {{user.username}}
               </button>
               <div class="dropdown-menu mt-3">
-                <a class="nav-link " href="#"><i class="bi bi-person-circle"></i> ข้อมูลส่วนตัว</a>
+                <a class="nav-link " href="{% url 'profile' %}"><i class="bi bi-person-circle"></i> ข้อมูลส่วนตัว</a>
                 <a class="nav-link " href="#"><i class="bi bi-bookmark-star-fill"></i> ประวัติการจอง</a>
-                <a class="nav-link " href="#"><i class="bi bi-box-arrow-right"></i> ออกจากระบบ</a>
+                <a class="nav-link " href="{% url 'logout' %}"><i class="bi bi-box-arrow-right"></i> ออกจากระบบ</a>
               </div>
               {% else %}
               <form class="form-inline mr-auto">
                 <div class="form-group"></div>
               </form>
               <span class="navbar-text"> <a class="login" href="{% url 'login' %}">เข้าสู่ระบบ</a></span>
-              <a class="btn btn-light action-button" role="button" href="{% url 'register' %}">สมัครสมาชิก</a>
+              <a href="{% url 'register' %}">สมัครสมาชิก</a>
               {% endif %}
             </div>
           </div>

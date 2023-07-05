@@ -20,7 +20,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.utils.safestring import mark_safe
 from django.db.models import Q
 from cat_hotel_admin.models import *
-from django.db.models import Sum
+from django.db.models import Sum, Max
 from django.http import JsonResponse
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -56,12 +56,12 @@ def admin_logout(request):
 
 def manage_cat_hotel_admin(request):
     if request.method == 'POST':
-        form = manage_cat_hotel(request.POST, request.FILES)  # request.FILES อัพรูป
+        form = ManageCatHotelForm(request.POST, request.FILES)
         if form.is_valid():
             form.save()
             return redirect('manage_cat_hotel_admin')
     else:
-        form = manage_cat_hotel()
+        form = ManageCatHotelForm()
 
     managed_cat_hotels = Room.objects.all()
 
@@ -98,7 +98,8 @@ def delete_room(request, pk):
         context = {
             'room': room,
         }
-        return render(request,'cat_hotel_admin/manage_cat_hotel_admin.html', context=context)
+    return render(request,'cat_hotel_admin/manage_cat_hotel_admin.html', context=context)
+
 
 def calendar_booking(request):
     all_booking = Booking.objects.all()
@@ -209,9 +210,11 @@ def end_stay(request, booking_id):
 def calendar_admin(requset):
     return render(requset, 'cat_hotel_admin/calendar_admin.html')
 
+
 def calculate_income_summary():
     today = date.today()
-    day_income = BookingHistory.objects.filter(start_date=today).aggregate(Sum('room__price'))['room__price__sum'] or 0.0
+    last_day = BookingHistory.objects.aggregate(Max('end_date'))['end_date__max']
+    day_income = BookingHistory.objects.filter(end_date=last_day).aggregate(Sum('room__price'))['room__price__sum'] or 0.0
     month_income = BookingHistory.objects.filter(start_date__month=today.month).aggregate(Sum('room__price'))['room__price__sum'] or 0.0
     year_income = BookingHistory.objects.filter(start_date__year=today.year).aggregate(Sum('room__price'))['room__price__sum'] or 0.0
     total_income = BookingHistory.objects.aggregate(Sum('room__price'))['room__price__sum'] or 0.0
@@ -224,6 +227,7 @@ def calculate_income_summary():
     income_summary.save()
 
     return income_summary
+
 
 def dashboard(request):
     all_months = list(calendar.month_name)[1:]
@@ -243,6 +247,7 @@ def dashboard(request):
         months.append(all_months[month - 1])
 
     total_income = income_summaries.last().year_income if income_summaries.exists() else 0
+    print(total_income)
     income_summary = calculate_income_summary()
 
     context = {
@@ -254,10 +259,6 @@ def dashboard(request):
     }
 
     return render(request, 'cat_hotel_admin/dashboard.html', context=context)
-
-
-
-
 
 
 '''
