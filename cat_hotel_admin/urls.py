@@ -20,15 +20,26 @@ urlpatterns = [
     path('manage_cat_hotel_admin', views.manage_cat_hotel_admin, name='manage_cat_hotel_admin'),
     path('manage_cat_hotel_admin/<int:pk>/', views.delete_room, name='delete_room'),
     path('booking_admin', views.booking_admin, name='booking_admin'),
-    path('currently_staying/', views.currently_staying, name='currently_staying'),
+    path('currently_staying', views.currently_staying, name='currently_staying'),
     path('currently_staying/<int:booking_id>/', views.confirm_booking, name='confirm_booking'),   
     path('booking_history/<int:booking_id>/', views.end_stay, name='end_stay'),
-    path('booking_history/', views.booking_history, name='booking_history'),
+    path('booking_history', views.booking_history, name='booking_history'),
     path('calendar_admin/', views.calendar_booking, name='calendar_booking'),
     path('admin_logout', views.admin_logout, name='admin_logout'),
     path('edit_room_cat_hotel/<int:pk>/', views.edit_room, name='edit_room'),
-    path('confirmed_booking_request/', views.confirmed_booking_request, name='confirmed_booking_request'),
+    path('confirmed_booking_request', views.confirmed_booking_request, name='confirmed_booking_request'),
     path('confirmed_booking_request/<int:booking_id>/', views.confirm_booking_admin, name='confirm_booking_admin'),
+
+    #search 
+    path('booking_admin/', views.search_booking_admin, name='search_booking_admin'),
+    path('confirmed_booking_request/', views.search_confirm_booking_admin, name='search_confirm_booking_admin'),
+    path('currently_staying/', views.search_currently_staying, name='search_currently_staying'),
+    path('booking_history/', views.search_booking_history, name='search_booking_history'),
+
+    #customer
+    path('customer/', views.customer, name='customer'),
+
+
 
     
 

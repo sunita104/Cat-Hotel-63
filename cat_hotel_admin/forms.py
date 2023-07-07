@@ -22,8 +22,6 @@ class ManageCatHotelForm(forms.ModelForm):
             'image': forms.ClearableFileInput(attrs={'multiple': True}),
         }
 
-
-
 class EditRoomForm(forms.ModelForm):
     class Meta:
         model = Room

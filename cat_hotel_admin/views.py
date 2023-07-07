@@ -101,6 +101,11 @@ def delete_room(request, pk):
     return render(request,'cat_hotel_admin/manage_cat_hotel_admin.html', context=context)
 
 
+#calendar_admin
+
+def calendar_admin(requset):
+    return render(requset, 'cat_hotel_admin/calendar_admin.html')
+
 def calendar_booking(request):
     all_booking = Booking.objects.all()
     get_booking_types = Booking.objects.only('booking_type')
@@ -129,11 +134,15 @@ def calendar_booking(request):
     }
     return render(request,'cat_hotel_admin/calendar_admin.html',context=context)
 
+
+#show status
+
 def booking_admin(request):
-    booking = Booking.objects.filter(staying_status=False,confirm_status=False)
+    bookings = Booking.objects.filter(staying_status=False,confirm_status=False)
 
     context = {
-        'booking': booking
+        'bookings': bookings,
+        'search_query': ''
     }
     return render(request, 'cat_hotel_admin/booking_admin.html', context=context)
 
@@ -163,10 +172,13 @@ def booking_history(request):
 
     return render(request, 'cat_hotel_admin/booking_history.html', context=context)
 
+
+#booking_status
+
 def confirm_booking_admin(request, booking_id):
     booking = Booking.objects.get(id=booking_id)
 
-    if booking.staying_status :
+    if booking.staying_status:
         return redirect('booking_admin')
 
     booking.confirm_status = True
@@ -207,9 +219,7 @@ def end_stay(request, booking_id):
     return redirect('booking_history')
 
 
-def calendar_admin(requset):
-    return render(requset, 'cat_hotel_admin/calendar_admin.html')
-
+#dashboard
 
 def calculate_income_summary():
     today = date.today()
@@ -259,6 +269,77 @@ def dashboard(request):
     }
 
     return render(request, 'cat_hotel_admin/dashboard.html', context=context)
+
+
+#search fution
+
+def search_booking_admin(request):
+    search_query = request.GET.get('query')
+    bookings = Booking.objects.filter(staying_status=False, confirm_status=False)
+
+    if search_query:
+        bookings = bookings.filter(customer__username__icontains=search_query)
+
+    context = {
+        'bookings': bookings,
+        'search_query': search_query
+    }
+
+    return render(request, 'cat_hotel_admin/booking_admin.html', context=context)
+
+
+def search_confirm_booking_admin(request):
+    search_query = request.GET.get('query')
+    bookings = Booking.objects.filter(confirm_status=True)
+
+    if search_query:
+        bookings = bookings.filter(customer__username__icontains=search_query)
+
+    context = {
+        'bookings': bookings,
+        'search_query': search_query
+    }
+
+    return render(request, 'cat_hotel_admin/confirmed_booking_request.html', context=context)
+
+
+def search_currently_staying(request):
+    search_query = request.GET.get('query')
+    bookings = Booking.objects.filter(staying_status=True)
+
+    if search_query:
+        bookings = bookings.filter(customer__username__icontains=search_query)
+
+    context = {
+        "bookings": bookings,
+        'search_query': search_query
+    }
+    
+    return render(request, "cat_hotel_admin/currently_staying.html", context=context)
+
+def search_booking_history(request):
+    search_query = request.GET.get('query')
+    booking_history = BookingHistory.objects.filter(customer_b__username__icontains=search_query) 
+
+    context = {
+        'booking_history': booking_history,
+        'search_query': search_query
+    }
+
+    return render(request, 'cat_hotel_admin/booking_history.html', context)
+
+#costomer
+def customer(request):
+    customers = User.objects.all()  
+    
+    context = {
+        'customers': customers
+        }
+
+    return render(request, 'cat_hotel_admin/customer.html', context)
+
+
+
 
 
 '''
