@@ -75,6 +75,11 @@ def manage_cat_hotel_admin(request):
 
 def edit_room(request, pk):
     room = get_object_or_404(Room, pk=pk)
+
+    if room.booking_set.exists():
+        messages.error(request, "ไม่สามารถแก้ไขห้องที่มีการจองได้")
+        return redirect('manage_cat_hotel_admin')
+
     if request.method == 'POST':
         form = EditRoomForm(request.POST, instance=room)
         if form.is_valid():
@@ -89,8 +94,13 @@ def edit_room(request, pk):
         
     return render(request, 'cat_hotel_admin/edit_room_cat_hotel.html', context=context)
 
+
 def delete_room(request, pk):
     room = get_object_or_404(Room, pk=pk)
+
+    if room.booking_set.exists():
+        return HttpResponse("Cannot delete a room that has bookings.")
+
     if request.method == 'POST':
         room.delete()
         return redirect('manage_cat_hotel_admin')
@@ -98,7 +108,9 @@ def delete_room(request, pk):
         context = {
             'room': room,
         }
-    return render(request,'cat_hotel_admin/manage_cat_hotel_admin.html', context=context)
+    
+    return render(request, 'cat_hotel_admin/manage_cat_hotel_admin.html', context=context)
+
 
 
 #calendar_admin
@@ -327,6 +339,17 @@ def search_booking_history(request):
     }
 
     return render(request, 'cat_hotel_admin/booking_history.html', context)
+
+def search_customer(request):
+    search_query = request.GET.get('query', '')
+    customers = User.objects.filter(
+        username__icontains=search_query
+    )
+    context = {
+        'customers': customers,
+        'search_query': search_query
+    }
+    return render(request, 'cat_hotel_admin/customer.html', context)
 
 #costomer
 def customer(request):

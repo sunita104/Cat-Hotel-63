@@ -2,6 +2,16 @@
 {% block content %}
 {% load crispy_forms_tags %}
 
+{% for message in messages %}
+<div class="container-fluid p-0">
+  <div class="alert {{ message.tags }} alert-dismissible" role="alert" >
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+      <span aria-hidden="true">×</span>
+    </button>
+    {{ message }}
+  </div>
+</div>
+{% endfor %}
 <div class="container mb-5 w-100 ">
     <div class="row">
         <div class="col-md-6">
@@ -40,7 +50,8 @@
                         </div>
                         <div class="col-12 mt-4">
                             <button class="btn btn-danger text-uppercase" type="button">ยกเลิก</button>
-                            <button class="btn btn-primary text-uppercase" type="submit">เพิ่มห้องพักแมว<i class="fa fa-plane ms-3"></i></button>
+                            <button class="btn btn-primary text-uppercase" type="submit">เพิ่มห้องพักแมว<i
+                                    class="fa fa-plane ms-3"></i></button>
                         </div>
                     </div>
                 </form>
@@ -74,17 +85,22 @@
                                 <td class="small text-end">{{ managed_cat_hotel.cat }}</td>
                                 <td class="small text-end">{{ managed_cat_hotel.price }}</td>
                                 <td>
-                                    <a href="{% url 'edit_room' managed_cat_hotel.id %}" class="btn btn-sm btn-warning">แก้ไข</a>
+                                    <a href="{% url 'edit_room' managed_cat_hotel.id %}"
+                                        class="btn btn-sm btn-warning">แก้ไข</a>
                                 </td>
                                 <td>
-                                    <button class="btn btn-sm btn-danger" data-toggle="modal" data-target="#deleteRoomModal{{ managed_cat_hotel.id }}">ลบ</button>
+                                    <button class="btn btn-sm btn-danger" data-toggle="modal"
+                                        data-target="#deleteRoomModal{{ managed_cat_hotel.id }}">ลบ</button>
                                 </td>
                             </tr>
-                            <div class="modal fade" id="deleteRoomModal{{ managed_cat_hotel.id }}" tabindex="-1" role="dialog" aria-labelledby="deleteRoomModalLabel{{ managed_cat_hotel.id }}" aria-hidden="true">
+                            <div class="modal fade" id="deleteRoomModal{{ managed_cat_hotel.id }}" tabindex="-1"
+                                role="dialog" aria-labelledby="deleteRoomModalLabel{{ managed_cat_hotel.id }}"
+                                aria-hidden="true">
                                 <div class="modal-dialog" role="document">
                                     <div class="modal-content">
                                         <div class="modal-header">
-                                            <h5 class="modal-title" id="deleteRoomModalLabel{{ managed_cat_hotel.id }}">ลบห้อง {{ managed_cat_hotel.room_number }}</h5>
+                                            <h5 class="modal-title" id="deleteRoomModalLabel{{ managed_cat_hotel.id }}">
+                                                ลบห้อง {{ managed_cat_hotel.room_number }}</h5>
                                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                                 <span aria-hidden="true">&times;</span>
                                             </button>
@@ -93,7 +109,8 @@
                                             คุณแน่ใจที่จะลบห้องนี้?
                                         </div>
                                         <div class="modal-footer">
-                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">ยกเลิก</button>
+                                            <button type="button" class="btn btn-secondary"
+                                                data-dismiss="modal">ยกเลิก</button>
                                             <form action="{% url 'delete_room' managed_cat_hotel.pk %}" method="post">
                                                 {% csrf_token %}
                                                 <input type="hidden" name="room_id" value="{{ managed_cat_hotel.pk }}">
@@ -106,9 +123,11 @@
                             {% endfor %}
                         </tbody>
                     </table>
+                    
+
                 </div>
             </div>
-        </div>        
+        </div>
     </div>
 </div>
 

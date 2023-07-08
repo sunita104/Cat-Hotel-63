@@ -35,9 +35,10 @@ urlpatterns = [
     path('confirmed_booking_request/', views.search_confirm_booking_admin, name='search_confirm_booking_admin'),
     path('currently_staying/', views.search_currently_staying, name='search_currently_staying'),
     path('booking_history/', views.search_booking_history, name='search_booking_history'),
+    path('search_customer/', views.search_customer, name='search_customer'),
 
     #customer
-    path('customer/', views.customer, name='customer'),
+    path('customer', views.customer, name='customer'),
 
 
 
