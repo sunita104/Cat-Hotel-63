@@ -37,8 +37,11 @@ urlpatterns = [
     path('booking_history/', views.search_booking_history, name='search_booking_history'),
     path('search_customer/', views.search_customer, name='search_customer'),
 
-    #customer
+    #customer web_page_admin
     path('customer', views.customer, name='customer'),
+    path('web_page_admin', views.edit_web_page, name='web_page_admin'),
+
+
 
 
 

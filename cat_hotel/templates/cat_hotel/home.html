@@ -1,191 +1,130 @@
-
 {% extends 'cat_hotel/components/base.html' %}
 {% block content %}
 {% load static %}
-<body>
-    <div class="container-fluid px-0 mb-5">
-        <div id="header-carousel" class="carousel slide" data-bs-ride="carousel">
-            <div class="carousel-inner">
-                <div class="carousel-item active">
-                    <img class="w-100" src="{% static 'cat_hotel/image/cat5.jpg' %}">
-                    <div class="carousel-caption">
-                        <div class="container">
-                            <div class="row justify-content-start">
-                                <div class="col-lg-8 text-start">
-                                    <p class="fs-4 text-white">Welcome to </p>
-                                    <h1 class="display-1 text-white mb-5 animated slideInRight">Cat Hotel</h1>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+
+<section id="home">
+    <div class="jumbotron">
+      <!-- Hero image or banner -->
+      <div class="container">
+        <h1>Welcome to the Cat Hotel</h1>
+        <!-- Slideshow or carousel -->
+        <div id="carouselExample" class="carousel slide" data-ride="carousel">
+          <div class="carousel-inner">
+            <div class="carousel-item active">
+              <img src="image1.jpg" class="d-block w-100" alt="Slide 1">
             </div>
-        </div>
-    </div>
-    <div class="container-xxl py-5">
-        <div class="container">
-            <div class="row g-5 align-items-end">
-                <div class="col-lg-6">
-                    <div class="row g-2">
-                        <div class="col-6 position-relative wow fadeIn" data-wow-delay="0.7s">
-                            <div class="about-experience  rounded">
-                                <div class="col-6 wow fadeIn" data-wow-delay="0.1s">
-                                    <img class="img-fluid rounded" src="{% static 'cat_hotel/image/cat6.jpg' %}">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-6 wow fadeIn" data-wow-delay="0.1s">
-                            <img class="img-fluid rounded" src="{% static 'cat_hotel/image/cat6.jpg' %}">
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-6 wow fadeIn" data-wow-delay="0.5s">
-                    <p class="section-title bg-white text-start text-primary pe-3"></p>
-                    <h1 class="mb-4">รีวิว</h1>
-                    <p class="mb-4">ปัจจุบันคนนิยมเลี้ยงสัตว์เลี้ยงเพิ่มขึ้นเรื่อยๆ โดยเฉพาะแมว ทำให้มีผู้ประกอบการจำนวนไม่น้อยหันมาทำธุรกิจหรือเปิดร้านเกี่ยวกับสัตว์เลี้ยงเพิ่มขึ้นตามไปด้วย หนึ่งในนั้นก็คือ โรงแรมแมวเพื่อรับฝากแมว 
-                        แต่เนื่องจากการจองคิวต้องรอรอคิวค่อนข้างนานและไม่สามารถรู้ได้ว่าสามารถนำแมวไปรับฝากได้ในตอนไหนหรือในเวลาไหน
-                    </p>
-                    <p class="mb-4">ดังนั้นผู้พัฒนาจึงมีแนวคิดสร้างระบบบริหารการจองคิวรับฝากแมวในโรงแรมแมวขึ้นมา เพื่อช่วยแก้ปัญหาการรอคิวภายในร้านและอำนวยความสะดวกแก่ผู้ใช้ให้สามรถจองคิวได้ล่วงหน้าโดยไม่ต้องมารอต่อคิวภายในร้าน</p>
-                </div>
+            <div class="carousel-item">
+              <img src="image2.jpg" class="d-block w-100" alt="Slide 2">
             </div>
+            <div class="carousel-item">
+              <img src="image3.jpg" class="d-block w-100" alt="Slide 3">
+            </div>
+          </div>
         </div>
+        <p>จองสถานที่ที่สมบูรณ์แบบ
+            สำหรับแมวของคุณ</p>
+        <a href="#rooms" class="btn btn-primary">จองโรงแรมแมว</a>
+      </div>
     </div>
+  </section>
+  
+  <!-- Room Gallery Page -->
+  <section id="rooms">
     <div class="container">
-        <h2>Customer Reviews</h2>
-        <div class="card">
-            <div class="card-body">
-                <h5 class="card-title">John Doe</h5>
-                <h6 class="card-subtitle mb-2 text-muted">July 20, 2023</h6>
-                <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce eu commodo est, non auctor nisi. Suspendisse ac ex sed felis lacinia rutrum vel id arcu.</p>
-            </div>
+      <h2>Our Rooms</h2>
+      <div class="row">
+        <div class="col-md-4">
+          <div class="room-card">
+            <img src="room1.jpg" alt="Room 1">
+            <h4>Standard Room</h4>
+            <p>Cozy room with all the basic amenities.</p>
+          </div>
         </div>
-
-        <div class="card">
-            <div class="card-body">
-                <h5 class="card-title">Jane Smith</h5>
-                <h6 class="card-subtitle mb-2 text-muted">August 5, 2023</h6>
-                <p class="card-text">Vestibulum cursus ipsum sit amet mauris tincidunt, ut maximus neque scelerisque. Sed elementum, lectus sed feugiat dignissim, eros est fringilla orci, vitae lobortis nulla tellus eget mauris.</p>
-            </div>
+        <div class="col-md-4">
+          <div class="room-card">
+            <img src="room2.jpg" alt="Room 2">
+            <h4>Deluxe Room</h4>
+            <p>Elegant room with additional space and luxury features.</p>
+          </div>
         </div>
-
-        <div class="card">
-            <div class="card-body">
-                <h5 class="card-title">Mark Johnson</h5>
-                <h6 class="card-subtitle mb-2 text-muted">September 12, 2023</h6>
-                <p class="card-text">Phasellus varius, dui ac rhoncus euismod, lectus tellus vestibulum felis, eget fermentum neque tellus vitae lorem. Duis interdum nulla mauris, et egestas justo iaculis sed.</p>
-            </div>
+        <div class="col-md-4">
+          <div class="room-card">
+            <img src="room3.jpg" alt="Room 3">
+            <h4>Suite Room</h4>
+            <p>Spacious room with a private balcony and premium amenities.</p>
+          </div>
         </div>
+      </div>
     </div>
-
-    <div class="container-fluid bg-primary text-body copyright py-4">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-12 text-center text-md-start">
-                    &copy; <a class="fw-semi-bold text-secondary" href="#">cat hotel</a>, by sunita.
-                </div>               
-            </div>
+  </section>
+  
+  <!-- Facilities and Amenities Page -->
+  <section id="facilities">
+    <div class="container">
+      <h2>Facilities and Amenities</h2>
+      <div class="row">
+        <div class="col-md-4">
+          <div class="facility-card">
+            <img src="facility1.jpg" alt="Facility 1">
+            <h4>Play Area</h4>
+            <p>A dedicated space for cats to play and exercise.</p>
+          </div>
         </div>
+        <div class="col-md-4">
+          <div class="facility-card">
+            <img src="facility2.jpg" alt="Facility 2">
+            <h4>Grooming Services</h4>
+            <p>Professional grooming services to keep your cat looking their best.</p>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="facility-card">
+            <img src="facility3.jpg" alt="Facility 3">
+            <h4>Feeding Station</h4>
+            <p>A dedicated area with a variety of high-quality cat food options.</p>
+          </div>
+        </div>
+      </div>
     </div>
-    <title>Review Page</title>
-</head>
-</body>
-</html>
-<style>
-    .carousel-caption {
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    display: flex;
-    align-items: center;
-    background: rgba(0, 0, 0, .1);
-    z-index: 1;
-}
+  </section>
+  
+  <!-- JavaScript dependencies -->
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  
+  <footer class="footer mt-auto py-3 bg-light">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-6">
+          <h5>About Us</h5>
+          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut condimentum nibh vitae mauris pretium, id pulvinar velit venenatis.</p>
+        </div>
+        <div class="col-md-3">
+          <h5>Quick Links</h5>
+          <ul class="list-unstyled">
+            <li><a href="#home">Home</a></li>
+            <li><a href="#rooms">Rooms</a></li>
+            <li><a href="#facilities">Facilities</a></li>
+            <li><a href="#contact">Contact Us</a></li>
+          </ul>
+        </div>
+        <div class="col-md-3">
+          <h5>Contact Info</h5>
+          <ul class="list-unstyled">
+            <li>123 Cat Street</li>
+            <li>City, State</li>
+            <li>Phone: (123) 456-7890</li>
+            <li>Email: info@cathotel.com</li>
+          </ul>
+        </div>
+      </div>
+      <div class="row mt-3">
+        <div class="col text-center">
+          <p>&copy; 2023 Cat Hotel. All rights reserved.</p>
+        </div>
+      </div>
+    </div>
+  </footer>
 
-@media (max-width: 768px) {
-    #header-carousel .carousel-item {
-        position: relative;
-        min-height: 450px;
-    }
-
-    #header-carousel .carousel-item img {
-        position: absolute;
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-    }
-}
-
-.page-header {
-    background: url(../img/banner.jpg) center center no-repeat;
-    background-size: cover;
-}
-
-.page-header .breadcrumb-item+.breadcrumb-item::before {
-    color: var(--light);
-}
-
-.page-header .breadcrumb-item,
-.page-header .breadcrumb-item a {
-    font-size: 18px;
-    color: var(--light);
-}
-
-.section-title {
-    position: relative;
-    display: inline-block;
-    text-transform: uppercase;
-    font-weight: 600;
-}
-
-.section-title::before {
-    position: absolute;
-    content: "";
-    width: calc(100% + 80px);
-    height: 2px;
-    top: 5px;
-    left: -40px;
-    background: var(--primary);
-    z-index: -1;
-}
-
-.section-title::after {
-    position: absolute;
-    content: "";
-    width: calc(100% + 120px);
-    height: 2px;
-    bottom: 6px;
-    left: -60px;
-    background: var(--primary);
-    z-index: -1;
-}
-
-.section-title.text-start::before {
-    width: calc(100% + 40px);
-    left: 0;
-}
-
-.section-title.text-start::after {
-    width: calc(100% + 60px);
-    left: 0;
-}
-
-.about-experience {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    right: -45px;
-    bottom: -45px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-}
-
-.footer {
-    color: #B0B9AE;
-}
-
-</style>
 
 {% endblock %}

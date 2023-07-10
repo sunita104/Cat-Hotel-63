@@ -112,7 +112,6 @@ def delete_room(request, pk):
     return render(request, 'cat_hotel_admin/manage_cat_hotel_admin.html', context=context)
 
 
-
 #calendar_admin
 
 def calendar_admin(requset):
@@ -235,8 +234,7 @@ def end_stay(request, booking_id):
 
 def calculate_income_summary():
     today = date.today()
-    last_day = BookingHistory.objects.aggregate(Max('end_date'))['end_date__max']
-    day_income = BookingHistory.objects.filter(end_date=last_day).aggregate(Sum('room__price'))['room__price__sum'] or 0.0
+    day_income = Booking.objects.filter(start_date=today, staying_status=True).aggregate(Sum('room__price'))['room__price__sum'] or 0.0
     month_income = BookingHistory.objects.filter(start_date__month=today.month).aggregate(Sum('room__price'))['room__price__sum'] or 0.0
     year_income = BookingHistory.objects.filter(start_date__year=today.year).aggregate(Sum('room__price'))['room__price__sum'] or 0.0
     total_income = BookingHistory.objects.aggregate(Sum('room__price'))['room__price__sum'] or 0.0
@@ -360,6 +358,53 @@ def customer(request):
         }
 
     return render(request, 'cat_hotel_admin/customer.html', context)
+
+
+#cancel booking
+
+def cancel_booking(request, booking_id):
+    booking = get_object_or_404(Booking, id=booking_id)
+
+    if request.method == 'POST':
+ 
+        booking.status = 'canceled'
+        booking.save()
+        return redirect('booking_history')  
+
+    context = {
+        'booking': booking
+    }
+    return render(request, 'cat_hotel_admin/cancel_booking.html', context)
+
+
+def edit_web_page(request):
+    if request.method == 'POST':
+        form = ManageWebpageForm(request.POST, request.FILES)
+        if form.is_valid():
+            title = form.cleaned_data['title']
+            image1 = form.cleaned_data['image1']
+            image2 = form.cleaned_data['image2']
+            image3 = form.cleaned_data['image3']
+            description1 = form.cleaned_data['description1']
+            image = form.cleaned_data['image4']
+            description2 = form.cleaned_data['description2']
+            about_us = form.cleaned_data['about_us']
+            location = form.cleaned_data['location']
+            contact = form.cleaned_data['contact']
+
+            messages.success(request, "แก้ไขหน้าเว็บสำเร็จ")
+            return redirect('manage_cat_hotel_admin')
+    else:
+        form = ManageWebpageForm()
+
+    context = {
+        "form": form
+    }
+
+    return render(request, 'cat_hotel_admin/web_page_admin.html', context=context)
+
+
+
 
 
 
