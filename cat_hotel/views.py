@@ -12,10 +12,18 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 
+
 # Create your views here.
 
-def home(requset):
-    return render(requset, 'cat_hotel/home.html')
+def home(request):
+    room = Room.objects.all()
+
+    context = {
+
+     "room": room,
+    }
+
+    return render(request, 'cat_hotel/home.html', context=context)
 
 def about(requset):
     return render(requset, 'cat_hotel/about.html')
@@ -35,7 +43,7 @@ def login_view(request):
             user = authenticate(request, username=username, password=password)
             if user is not None:
                 login(request, user)
-                return redirect('home')  # Replace 'home' with your desired URL name for the home page
+                return redirect('home')  
             else:
                 form.add_error(None, 'ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง')
     else:

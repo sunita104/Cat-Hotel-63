@@ -34,12 +34,3 @@ class BookingForm(forms.ModelForm):
 class SearchForm(forms.Form):
     check_in_date = forms.DateField(widget=forms.DateInput(attrs={'type': 'date', 'format': 'yyyy-mm-dd'}), label='วันที่เข้าฝาก')
     check_out_date = forms.DateField(widget=forms.DateInput(attrs={'type': 'date', 'format': 'yyyy-mm-dd'}), label='ถึงวันที่')
-
-
-
-
-
-
-
-
-

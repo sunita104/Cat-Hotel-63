@@ -20,40 +20,40 @@
 </head>
 <body>
 
-</body>
-</html>  
-<div class="Container ">
-<div class="card mt-5" style="background-color: #fff !important; border:solid 0px !important;">
-    <div class="upper">
-        <div class="row">
-            <div class="col-8 heading">
-                <h4><b>Cat_Hotel_Admin</b></h4>
+    <body>
+        <div class="container">
+            <div class="card mt-5" style="background-color: #fff !important; border:solid 0px !important;">
+                <div class="upper">
+                    <div class="row">
+                        <div class="col-8 heading">
+                            <h4><b>Cat Hotel Admin</b></h4>
+                        </div>
+                    </div>
+                    <form id="form" method="POST">
+                        {% csrf_token %}
+                        <div id="alert" class="mt-1" role="alert">
+                            {% if messages %}
+                                {% for message in messages %}
+                                    <div class="alert alert-danger">{{ message }}</div>
+                                {% endfor %}
+                            {% endif %}
+                        </div>
+                        <div class="form-element">
+                            <span id="input-header">Username</span>
+                            <input type="text" id="username" name="username" placeholder="Username">
+                        </div>
+                        <div class="form-element">
+                            <span id="input-header">Password</span>
+                            <input type="password" name="password" id="password" placeholder="Password">
+                        </div>
+                        <div class="lower">
+                            <button type="submit" class="btn btn-warning">Login</button>
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
-        <form id="form" method="POST">
-            {% csrf_token %}
-            <div id="alert" class="mt-1" role="alert">
-            </div>
-            <div class="form-element">
-                <span id="input-header">Username_admin</span>
-                <input type="user" id="username" name="username"
-                       placeholder="username">
-            </div>
-            <div class="form-element ">
-                <span id="input-header">password</span>
-                    <div class="d-flex align-items-center">
-                        <input type="password" name="password" id="password"
-                               placeholder="pass*****">
-                    </div>                
-            </div>
-            <div class="lower">
-                <button type="submit" class="btn btn-warning">Login</button>
-            </div>
-        </form>
-    </div>
-</div>
-</div>
-</form>
+    </body>
 <style>
     
 

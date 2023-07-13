@@ -1,0 +1,13 @@
+{% extends 'cat_hotel_admin/components/base.html' %}
+{% block content %}
+<body>
+    <h1>Admin View</h1>
+    <ul>
+        {% for admin in admins %}
+            <li>{{ admin.username }}</li>
+        {% empty %}
+            <li>No admins found.</li>
+        {% endfor %}
+    </ul>
+</body>
+{% endblock %}

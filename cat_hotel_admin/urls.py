@@ -39,7 +39,11 @@ urlpatterns = [
 
     #customer web_page_admin
     path('customer', views.customer, name='customer'),
-    path('web_page_admin', views.edit_web_page, name='web_page_admin'),
+    #path('edit_web_page_admin', views.edit_web_page, name='web_page_admin'),
+
+    path('admin_view', views.admin_login, name='admin_login'),
+
+
 
 
 

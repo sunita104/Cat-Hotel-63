@@ -33,21 +33,65 @@ from rest_framework.decorators import action
 import matplotlib.pyplot as plt
 import pandas as pd
 import json
+from django.contrib.auth.decorators import login_required
+from django.contrib.admin.views.decorators import staff_member_required
+from django.contrib.auth import get_user_model
 
 
-# Create your views here.
+#admin
 
+@staff_member_required(login_url='admin_login')
 def admin_login(request):
     if request.method == 'POST':
         username = request.POST['username']
         password = request.POST['password']
 
         user = authenticate(request, username=username, password=password)
-        if user is not None:
+        if user is not None and user.is_superuser:
             login(request, user)
             return redirect('dashboard')
+        else:
+            messages.error(request, 'ผู้ใช้ของคุณถูกปฏิเสธการเข้าใช้ คุณต้องเป็นผู้ดูแลระบบเพื่อเข้าสู่ระบบ')
+            return redirect('admin_login')
     else:
         return render(request, 'cat_hotel_admin/admin_login.html')
+
+def create_superuser(request):
+    if request.method == 'POST':
+        username = request.POST['username']
+        password = request.POST['password']
+        email = request.POST['email']
+
+        User = get_user_model()
+        if not User.objects.filter(username=username).exists():
+            User.objects.create_superuser(username=username, password=password, email=email)
+            return redirect('login')  
+        else:
+            error_message = 'มีชื่อผู้ใช้ชื่อนี้ของแอดมินแล้ว โปรดเลือกชื่อผู้ใช้อื่น'
+            return render(request, 'create_superuser.html', {'error_message': error_message})
+    else:
+        return render(request, 'create_superuser.html')
+
+def edit_superuser(request):
+    User = get_user_model()
+    superuser = User.objects.filter(is_superuser=True).first()
+
+    if request.method == 'POST':
+        username = request.POST['username']
+        password = request.POST['password']
+        email = request.POST['email']
+
+        superuser.username = username
+        superuser.set_password(password)
+        superuser.email = email
+        superuser.save()
+
+        return redirect('login') 
+    else:
+        context = {
+            'superuser': superuser
+        }
+        return render(request, 'edit_superuser.html', context)
            
 def admin_logout(request):
     if request.method == 'POST':
@@ -267,7 +311,7 @@ def dashboard(request):
         months.append(all_months[month - 1])
 
     total_income = income_summaries.last().year_income if income_summaries.exists() else 0
-    print(total_income)
+    #print(total_income)
     income_summary = calculate_income_summary()
 
     context = {
@@ -327,6 +371,7 @@ def search_currently_staying(request):
     
     return render(request, "cat_hotel_admin/currently_staying.html", context=context)
 
+@login_required
 def search_booking_history(request):
     search_query = request.GET.get('query')
     booking_history = BookingHistory.objects.filter(customer_b__username__icontains=search_query) 
@@ -338,10 +383,12 @@ def search_booking_history(request):
 
     return render(request, 'cat_hotel_admin/booking_history.html', context)
 
+@login_required
 def search_customer(request):
     search_query = request.GET.get('query', '')
     customers = User.objects.filter(
-        username__icontains=search_query
+        username__icontains=search_query,
+        staff_status=False
     )
     context = {
         'customers': customers,
@@ -376,32 +423,24 @@ def cancel_booking(request, booking_id):
     }
     return render(request, 'cat_hotel_admin/cancel_booking.html', context)
 
-
-def edit_web_page(request):
+    
+'''
+def admin_login(request):
     if request.method == 'POST':
-        form = ManageWebpageForm(request.POST, request.FILES)
-        if form.is_valid():
-            title = form.cleaned_data['title']
-            image1 = form.cleaned_data['image1']
-            image2 = form.cleaned_data['image2']
-            image3 = form.cleaned_data['image3']
-            description1 = form.cleaned_data['description1']
-            image = form.cleaned_data['image4']
-            description2 = form.cleaned_data['description2']
-            about_us = form.cleaned_data['about_us']
-            location = form.cleaned_data['location']
-            contact = form.cleaned_data['contact']
-
-            messages.success(request, "แก้ไขหน้าเว็บสำเร็จ")
-            return redirect('manage_cat_hotel_admin')
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+        user = authenticate(request, username=username, password=password)
+        if user is not None and user.is_staff:
+            login(request, user)
+            return redirect('dashboard')  # Replace 'admin_dashboard' with the URL name of your admin dashboard page
+        else:
+            # Handle invalid login or unauthorized access
+            return render(request, 'admin_view.html', {'error_message': 'Invalid login or unauthorized access.'})
     else:
-        form = ManageWebpageForm()
+        return render(request, 'cat_hotel_admin/admin_view.html')
 
-    context = {
-        "form": form
-    }
+'''
 
-    return render(request, 'cat_hotel_admin/web_page_admin.html', context=context)
 
 
 

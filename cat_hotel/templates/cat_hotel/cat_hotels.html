@@ -42,11 +42,11 @@
             <div class="mt-2 text-center">
               <h5 class=" card-title text-primary">ห้อง {{ room.room_number }}</h5> 
             </div>
-            <div class="ml-5">
-              <h6>{{ room.description }}</h6>
-              <h6>จำนวนแมวที่รับสูงสุด : {{ room.cat }} ตัว</h6>
-              <h6>฿{{ room.price }}/ต่อคืน</h6>
-              <h6>ราคารวม:฿{{ room.total_price }} THB</h6>
+            <div class="ml-4">
+              <p>{{ room.description }}</ย>
+              <p>จำนวนแมวที่รับสูงสุด : {{ room.cat }} ตัว</p>
+              <p><u>฿{{ room.price }} บาท/ต่อคืน</u></p>
+              <p><strong>ราคารวม:</strong> ฿{{ room.total_price }} บาท</p>
             </div>
             <div class="mb-3 text-center">
               <a class="btn btn-outline-primary" href="{% url 'cat_hotel' room.room_number check_in_date check_out_date %}" data-abc="true">จอง</a>
@@ -63,7 +63,7 @@
       {% endif %}
     </div>
 </div> 
-</form>
+
 
 <script>
   function validateDate(input) {

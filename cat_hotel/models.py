@@ -2,7 +2,10 @@ from django.db import models
 from cat_hotel_admin.models import *
 import datetime
 from django.contrib.auth.models import User
+from django.contrib.auth.models import AbstractUser
 # Create your models here.
+
+
 
 class Booking(models.Model):
     customer = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=False)

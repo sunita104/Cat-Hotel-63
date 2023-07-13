@@ -3,17 +3,9 @@ from cat_hotel.models import *
 from cat_hotel.models import *
 from django.urls import reverse
 from django.utils import timezone
+from django.contrib.auth.models import AbstractUser
 
-# Create your models here.
-
-class Admin_c(models.Model):
-    name = models.CharField(max_length=50, null=True, blank=False)
-    username = models.CharField(max_length=50, null=True, blank=False)
-    password = models.CharField(max_length=7, null=True, blank=False)
-
-    def __str__(self):
-        return self.name
-    
+ 
 class Room(models.Model):
     image = models.FileField(upload_to='rooms/image',null=True, blank=True)
     room_number = models.CharField(max_length=10, null=True, blank=False)
@@ -37,6 +29,14 @@ class IncomeSummary(models.Model):
         self.year_income += amount
         self.total_income += amount
         self.save()
+
+
+
+
+
+
+
+
     
 
 
