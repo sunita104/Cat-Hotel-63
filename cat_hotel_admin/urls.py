@@ -25,7 +25,7 @@ urlpatterns = [
     path('booking_history/<int:booking_id>/', views.end_stay, name='end_stay'),
     path('booking_history', views.booking_history, name='booking_history'),
     path('calendar_admin/', views.calendar_booking, name='calendar_booking'),
-    path('admin_logout', views.admin_logout, name='admin_logout'),
+    path('admin_logout/', views.admin_logout, name='admin_logout'),
     path('edit_room_cat_hotel/<int:pk>/', views.edit_room, name='edit_room'),
     path('confirmed_booking_request', views.confirmed_booking_request, name='confirmed_booking_request'),
     path('confirmed_booking_request/<int:booking_id>/', views.confirm_booking_admin, name='confirm_booking_admin'),
@@ -37,11 +37,13 @@ urlpatterns = [
     path('booking_history/', views.search_booking_history, name='search_booking_history'),
     path('search_customer/', views.search_customer, name='search_customer'),
 
-    #customer web_page_admin
+    #customer 
     path('customer', views.customer, name='customer'),
     #path('edit_web_page_admin', views.edit_web_page, name='web_page_admin'),
 
-    path('admin_view', views.admin_login, name='admin_login'),
+    #admin
+    path('admin_login', views.admin_login, name='admin_login'),
+    path('profile_admin', views.profile_admin, name='profile_admin'),
 
 
 

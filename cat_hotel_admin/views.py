@@ -56,48 +56,18 @@ def admin_login(request):
     else:
         return render(request, 'cat_hotel_admin/admin_login.html')
 
-def create_superuser(request):
-    if request.method == 'POST':
-        username = request.POST['username']
-        password = request.POST['password']
-        email = request.POST['email']
-
-        User = get_user_model()
-        if not User.objects.filter(username=username).exists():
-            User.objects.create_superuser(username=username, password=password, email=email)
-            return redirect('login')  
-        else:
-            error_message = 'มีชื่อผู้ใช้ชื่อนี้ของแอดมินแล้ว โปรดเลือกชื่อผู้ใช้อื่น'
-            return render(request, 'create_superuser.html', {'error_message': error_message})
-    else:
-        return render(request, 'create_superuser.html')
-
-def edit_superuser(request):
-    User = get_user_model()
-    superuser = User.objects.filter(is_superuser=True).first()
-
-    if request.method == 'POST':
-        username = request.POST['username']
-        password = request.POST['password']
-        email = request.POST['email']
-
-        superuser.username = username
-        superuser.set_password(password)
-        superuser.email = email
-        superuser.save()
-
-        return redirect('login') 
-    else:
-        context = {
-            'superuser': superuser
-        }
-        return render(request, 'edit_superuser.html', context)
+@staff_member_required(login_url='admin_login')
+def profile_admin(request):
+    return render(request, 'cat_hotel_admin/profile_admin.html')
            
 def admin_logout(request):
     if request.method == 'POST':
         logout(request)
         return redirect('admin_login')
+    else:
+        return redirect('admin_login')
 
+@staff_member_required(login_url='admin_login')
 def manage_cat_hotel_admin(request):
     if request.method == 'POST':
         form = ManageCatHotelForm(request.POST, request.FILES)
@@ -116,7 +86,7 @@ def manage_cat_hotel_admin(request):
 
     return render(request, 'cat_hotel_admin/manage_cat_hotel_admin.html', context=context)
 
-
+@staff_member_required(login_url='admin_login')
 def edit_room(request, pk):
     room = get_object_or_404(Room, pk=pk)
 
@@ -138,7 +108,7 @@ def edit_room(request, pk):
         
     return render(request, 'cat_hotel_admin/edit_room_cat_hotel.html', context=context)
 
-
+@staff_member_required(login_url='admin_login')
 def delete_room(request, pk):
     room = get_object_or_404(Room, pk=pk)
 
@@ -158,6 +128,7 @@ def delete_room(request, pk):
 
 #calendar_admin
 
+@staff_member_required(login_url='admin_login')
 def calendar_admin(requset):
     return render(requset, 'cat_hotel_admin/calendar_admin.html')
 
@@ -192,6 +163,7 @@ def calendar_booking(request):
 
 #show status
 
+@staff_member_required(login_url='admin_login')
 def booking_admin(request):
     bookings = Booking.objects.filter(staying_status=False,confirm_status=False)
 
@@ -201,6 +173,7 @@ def booking_admin(request):
     }
     return render(request, 'cat_hotel_admin/booking_admin.html', context=context)
 
+@staff_member_required(login_url='admin_login')
 def confirmed_booking_request(requset):
     bookings = Booking.objects.filter(confirm_status=True)
 
@@ -209,6 +182,7 @@ def confirmed_booking_request(requset):
         }
     return render(requset, 'cat_hotel_admin/confirmed_booking_request.html',context=context)
 
+@staff_member_required(login_url='admin_login')
 def currently_staying(request):
     bookings = Booking.objects.filter(staying_status=True)
 
@@ -218,6 +192,7 @@ def currently_staying(request):
     
     return render(request, "cat_hotel_admin/currently_staying.html", context=context)
 
+@staff_member_required(login_url='admin_login')
 def booking_history(request):
     booking_history = BookingHistory.objects.all()
 
@@ -230,6 +205,7 @@ def booking_history(request):
 
 #booking_status
 
+@staff_member_required(login_url='admin_login')
 def confirm_booking_admin(request, booking_id):
     booking = Booking.objects.get(id=booking_id)
 
@@ -240,6 +216,7 @@ def confirm_booking_admin(request, booking_id):
     booking.save()
     return redirect('confirmed_booking_request')
 
+@staff_member_required(login_url='admin_login')
 def confirm_booking(request, booking_id):
     booking = Booking.objects.get(id=booking_id)
 
@@ -252,6 +229,7 @@ def confirm_booking(request, booking_id):
 
     return redirect('currently_staying')
 
+@staff_member_required(login_url='admin_login')
 def end_stay(request, booking_id):  
     booking = Booking.objects.get(id=booking_id)
 
@@ -292,7 +270,7 @@ def calculate_income_summary():
 
     return income_summary
 
-
+@staff_member_required(login_url='admin_login')
 def dashboard(request):
     all_months = list(calendar.month_name)[1:]
     income_summaries = IncomeSummary.objects.order_by('date')
@@ -326,6 +304,7 @@ def dashboard(request):
 
 
 #search fution
+
 
 def search_booking_admin(request):
     search_query = request.GET.get('query')
@@ -371,7 +350,7 @@ def search_currently_staying(request):
     
     return render(request, "cat_hotel_admin/currently_staying.html", context=context)
 
-@login_required
+
 def search_booking_history(request):
     search_query = request.GET.get('query')
     booking_history = BookingHistory.objects.filter(customer_b__username__icontains=search_query) 
@@ -383,26 +362,30 @@ def search_booking_history(request):
 
     return render(request, 'cat_hotel_admin/booking_history.html', context)
 
-@login_required
+
 def search_customer(request):
     search_query = request.GET.get('query', '')
-    customers = User.objects.filter(
-        username__icontains=search_query,
-        staff_status=False
+    customers = get_user_model().objects.filter(
+        Q(username__icontains=search_query) |
+        Q(first_name__icontains=search_query) |
+        Q(last_name__icontains=search_query),
+        is_staff=False
     )
     context = {
         'customers': customers,
         'search_query': search_query
     }
     return render(request, 'cat_hotel_admin/customer.html', context)
-
 #costomer
+
+@staff_member_required(login_url='admin_login')
 def customer(request):
-    customers = User.objects.all()  
+    User = get_user_model()
+    customers = User.objects.filter(is_superuser=False)
     
     context = {
         'customers': customers
-        }
+    }
 
     return render(request, 'cat_hotel_admin/customer.html', context)
 
@@ -440,14 +423,6 @@ def admin_login(request):
         return render(request, 'cat_hotel_admin/admin_view.html')
 
 '''
-
-
-
-
-
-
-
-
 
 '''
 class CalendarView(generic.ListView):

@@ -3,19 +3,40 @@ from cat_hotel.models import *
 from datetime import datetime
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth.forms import PasswordChangeForm
+from django.contrib.auth.forms import UserChangeForm
 
-class LoginForm(forms.Form):
+
+class LoginForm(AuthenticationForm):
     username = forms.CharField(label='ชื่อผู้ใช้', max_length=150)
     password = forms.CharField(label='รหัสผ่าน', widget=forms.PasswordInput)
 
 class RegisterForm(UserCreationForm):
-    first_name = forms.CharField(max_length=100, help_text='Last Name')
+    first_name = forms.CharField(max_length=100, help_text='fist Name')
     last_name = forms.CharField(max_length=100, help_text='Last Name')
     email = forms.EmailField(max_length=150, help_text='Email')
 
     class Meta:
         model = User
-        fields = ('username', 'first_name', 'last_name','email', 'password1', 'password2',)
+        fields = ['username', 'first_name', 'last_name','email', 'password1', 'password2',]
+
+class EditProfileForm(UserChangeForm):
+    first_name = forms.CharField(max_length=100, help_text='First Name')
+    last_name = forms.CharField(max_length=100, help_text='Last Name')
+    email = forms.EmailField(max_length=150, help_text='Email')
+
+    class Meta:
+        model = User
+        fields = ('username', 'first_name', 'last_name', 'email', )
+        labels = {
+            'username' : 'ชื่อผู้ใช้',
+        }
+
+class PasswordChangeForm(PasswordChangeForm):
+    old_password = forms.CharField(label='รหัสผ่านเดิม', widget=forms.PasswordInput)
+    new_password1 = forms.CharField(label='รหัสผ่านใหม่', widget=forms.PasswordInput)
+    new_password2 = forms.CharField(label='ยืนยันรหัสผ่านใหม่', widget=forms.PasswordInput)
 
 
 class BookingForm(forms.ModelForm):

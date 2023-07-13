@@ -1,9 +1,8 @@
 {% extends 'cat_hotel/components/base.html' %}
 {% block content %}
 
-<form method="GET" action="{% url 'completed' %}">
+<form method="GET" action="#">
   {% csrf_token %}
-  <!-- Invoice Example -->
   <div class="col-xl-11 col-lg-7 mb-4 ml-5 mt-5">
     <div class="card">
       <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">

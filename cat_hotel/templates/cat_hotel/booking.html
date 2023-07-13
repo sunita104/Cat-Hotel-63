@@ -1,0 +1,54 @@
+{% extends 'cat_hotel/components/base.html' %}
+{% block content %}
+
+<form method="GET" action="{% url 'completed' %}">
+  {% csrf_token %}
+  <div class="col-xl-11 col-lg-7 mb-4 ml-5 mt-5">
+    <div class="card">
+      <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+        <h5 class="m-0 font-weight-bold text-primary">กำลังจอง</h5>
+      </div>
+      <div class="table-responsive pd-3">
+        <table class="table align-items-center table-flush">
+          <thead class="thead-light">
+            <tr>
+              <th>ห้อง</th>
+              <th>วันที่เข้าฝาก</th>
+              <th>ฝากถึงวันที่</th>
+              <th>จำนวนแมว</th>
+              <th>ชื่อแมว</th>
+              <th>เบอร์ติดต่อ</th>
+              <th>ราคา/บาท</th>
+              <th>แก้ไขการจอง</th>
+              <th>ยกเลิกการจอง</th>
+            </tr>
+          </thead>
+          {% for booking in booking %}
+          <div class="table-responsive pd-3">
+          <table class="table align-items-center table-flush">
+          <tbody>
+            <tr>
+              <td class="text-primary">{{ booking.room }}</td>
+              <td>{{ booking.start_date}}</td>
+              <td>{{ booking.end_date }}</td>
+              <td>{{ booking.cat_name }}</td>
+              <td>{{ booking.cat }}</td>
+              <td>{{ booking.phone_number }}</td>
+              <th>{{ booking.room.price }}</th>
+              <td><a href="#" class="btn btn-sm btn-warning">แก้ไข</a></td>
+              <td><a href="#" class="btn btn-sm btn-danger">ยกเลิก</a></td>
+            </tr>
+          </tbody>
+          </table>
+          </div>
+        {% endfor %} 
+      </div>
+      
+      <div class="card-footer"></div>
+    </div>
+  </div>
+</form>
+
+
+{% endblock %}
+

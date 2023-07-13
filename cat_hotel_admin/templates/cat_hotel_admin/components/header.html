@@ -48,24 +48,33 @@
             </ul>     
             {% if user.is_authenticated %}
             <form class="form-inline mr-auto">
-              <div class="form-group text-black"></div>
+              <div class="form-group"></div>
             </form>
-            <div class="btn-group dropleft mr-5">
-              <button type="button" class="btn" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <i class="bi bi-person-circle mr-1"></i> {{ user.username }}
-              </button>
-              <div class="dropdown-menu mt-3">
-                <a class="nav-link" href="#"><i class="bi bi-person-circle"></i> ข้อมูลส่วนตัว</a>
-                <a class="nav-link" href="#"><i class="bi bi-bookmark-star-fill"></i> ประวัติการจอง</a>
-                <a class="nav-link" href="#"><i class="bi bi-box-arrow-right"></i> ออกจากระบบ</a>
+            <span class="navbar-text"> <a class="login" href="{% url 'profile_admin' %}"><i
+                  class="bi bi-person-circle mr-1"></i> {{user.username}}</a></span>
+            <a href="#" data-toggle="modal" data-target="#logoutModal">ออกจากระบบ</a>
+
+            <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="logoutModalLabel"
+              aria-hidden="true">
+              <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="logoutModalLabel">ยืนยันการออกจากระบบของแอดมิน</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <div class="modal-body">
+                    <p>คุณต้องการออกจากระบบของแอดมินใช่หรือไม่?</p>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">ยกเลิก</button>
+                    <a class="btn btn-primary" href="{% url 'admin_logout' %}">ออกจากระบบ</a>
+                  </div>
+                </div>
               </div>
             </div>
             {% else %}
-            <form class="form-inline mr-auto">
-              <div class="form-group"></div>
-            </form>
-            <span class="navbar-text"><a class="login" href="#">เข้าสู่ระบบ</a></span>
-            <a href="#">สมัครสมาชิก</a>
             {% endif %}
           </div>
         </div>
@@ -105,7 +114,6 @@
     background: transparent;
     padding-top: .75rem;
     padding-bottom: .75rem;
-    color: #fff;
     border-radius: 0;
     box-shadow: none;
     border: none;

@@ -11,7 +11,8 @@ from cat_hotel_admin.views import calendar_booking
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
-
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth import update_session_auth_hash
 
 # Create your views here.
 
@@ -31,26 +32,53 @@ def about(requset):
 def profile(requset):
     return render(requset, 'cat_hotel/profile.html')
 
-def edit_profile(requset):
-    return render(requset, 'cat_hotel/edit_profile.html')
+@login_required
+def edit_profile(request):
+    if request.method == 'POST':
+        form = EditProfileForm(request.POST, instance=request.user)
+        if form.is_valid():
+            form.save()
+            return redirect('profile')
+    else:
+        form = EditProfileForm(instance=request.user)
+
+    context = {
+        'form': form
+    }
+    return render(request, 'cat_hotel/edit_profile.html', context)
 
 def login_view(request):
     if request.method == 'POST':
-        form = LoginForm(request.POST)
+        form = LoginForm(request, data=request.POST)
         if form.is_valid():
-            username = form.cleaned_data['username']
-            password = form.cleaned_data['password']
-            user = authenticate(request, username=username, password=password)
-            if user is not None:
-                login(request, user)
-                return redirect('home')  
-            else:
-                form.add_error(None, 'ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง')
+            user = form.get_user()
+            login(request, user)
+            return redirect('home')  # Replace 'home' with your desired URL
     else:
-        form = LoginForm()
+        form = LoginForm(request)
 
-    return render(request, 'cat_hotel/login.html', {'form': form})
+    context = {
+        'form': form,
+    }
 
+    return render(request, 'cat_hotel/login.html', context=context)
+
+@login_required
+def change_password(request):
+    form = PasswordChangeForm(request.user)
+
+    if request.method == 'POST':
+        form = PasswordChangeForm(request.user, request.POST)
+        if form.is_valid():
+            user = form.save()
+            update_session_auth_hash(request, user) 
+            return redirect('profile')  
+
+    context = {
+        'form': form,
+    }
+
+    return render(request, 'cat_hotel/change_password.html', context=context)
 def logout_view(request):
     logout(request)
     return redirect('home')  
@@ -68,7 +96,7 @@ def register(request):
 
     return render(request, 'cat_hotel/register.html', {'form': form})
 
-
+@login_required
 def cat_hotel(request, room_number, check_in_date, check_out_date):
     one_room = Room.objects.get(room_number=room_number)
     
@@ -102,7 +130,7 @@ def cat_hotel(request, room_number, check_in_date, check_out_date):
 
     return render(request, 'cat_hotel/cat_hotel.html', context)
 
-
+@login_required
 def search_available_rooms(request):
     if request.method == 'GET':
         check_in_date = request.GET.get('check_in_date') 
@@ -135,7 +163,7 @@ def search_available_rooms(request):
             form = SearchForm()
             return render(request, 'cat_hotel/cat_hotels.html', {'form': form})
 
-
+@login_required
 def completed(request):
     booking = Booking.objects.all()
 
@@ -175,14 +203,17 @@ def calendar(request):
 def edit(request):
     return render(request, 'cat_hotel/completed.html')
     
-def success(request):
-    return render(request, 'success.html')
 
 def edit_completed(requset):
     return render(requset,'cat_hotel/edit_completed.html')
 
-def booking_history_cathotel(requset):
-    return render(requset,'cat_hotel/booking_history_cathotel.html')
+def booking(requset): 
+    return render(requset,'cat_hotel/booking.html')
+
+def booking_history(requset): 
+    return render(requset,'cat_hotel/booking_history.html')
+
+
 
 
 
