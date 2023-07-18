@@ -13,6 +13,7 @@ from django.contrib import messages
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import update_session_auth_hash
+from django.http import QueryDict
 
 # Create your views here.
 
@@ -96,72 +97,73 @@ def register(request):
 
     return render(request, 'cat_hotel/register.html', {'form': form})
 
+
+# cat_hotel view
+from datetime import datetime
+
 @login_required
-def cat_hotel(request, room_number, check_in_date, check_out_date):
+def booking_cat_hotel(request, room_number, check_in_date, check_out_date):
     one_room = Room.objects.get(room_number=room_number)
-    
+    num_days = (datetime.strptime(check_out_date, '%Y-%m-%d').date() - datetime.strptime(check_in_date.strip('. ').strip(), '%Y-%m-%d').date()).days
+    total_price = num_days * one_room.price
+    print(one_room)
     if request.method == 'POST':
-        form = BookingForm(request.POST)
-        if form.is_valid():
-            booking = Booking.objects.create(
-                room=one_room,
-                customer=form.cleaned_data['customer'],
-                start_date=datetime.strptime(check_in_date, '%Y-%m-%d').date(),
-                end_date=datetime.strptime(check_out_date, '%Y-%m-%d').date(),
-                cat_name=form.cleaned_data['cat_name'],
-                phone_number=form.cleaned_data['phone_number']
-            )
-            booking.save()
-        
-            return redirect('cat_hotel', booking_id=booking.id)
-    
-    else:
-        form = BookingForm(initial={
-            'start_date': datetime.strptime(check_in_date, '%Y-%m-%d').date(),
-            'end_date': datetime.strptime(check_out_date, '%Y-%m-%d').date(),
-        })
-    
+        print('if')
+        booking = Booking.objects.get
+        booking.customer = request.user
+        booking.room = one_room
+        booking.start_date = datetime.strptime(check_in_date.strip('. ').strip(), '%Y-%m-%d').date()
+        booking.end_date = datetime.strptime(check_out_date.strip('. ').strip(), '%Y-%m-%d').date()
+        booking.total_price = total_price
+        #booking.save()
+        return redirect('cat_hotel')
+
     context = {
+        "customer": request.user,
         "one_room": one_room,
         "check_in_date": check_in_date,
         "check_out_date": check_out_date,
         "form": form,
+        "total_price": total_price,
     }
+    return render(request, 'cat_hotel/cat_hotel.html', context=context)
 
-    return render(request, 'cat_hotel/cat_hotel.html', context)
+
+
+
 
 @login_required
 def search_available_rooms(request):
     if request.method == 'GET':
-        check_in_date = request.GET.get('check_in_date') 
+        check_in_date = request.GET.get('check_in_date')
         check_out_date = request.GET.get('check_out_date')
         initial_values = {'check_in_date': check_in_date, 'check_out_date': check_out_date}
         form = SearchForm(initial=initial_values)
-           
+
         if check_in_date and check_out_date:
-            overlapping_bookings = Booking.objects.filter(start_date__lte=check_out_date, end_date__gte=check_in_date) 
-            booked_rooms = [booking.room for booking in overlapping_bookings] 
-            available_rooms = Room.objects.exclude(id__in=[room.id for room in booked_rooms]) 
-           
+            overlapping_bookings = Booking.objects.filter(start_date__lte=check_out_date, end_date__gte=check_in_date)
+            booked_rooms = [booking.room for booking in overlapping_bookings]
+            available_rooms = Room.objects.exclude(id__in=[room.id for room in booked_rooms])
+
             for room in available_rooms:
-                num_days = (datetime.strptime(check_out_date, '%Y-%m-%d').date() - datetime.strptime(check_in_date, '%Y-%m-%d').date()).days 
+                num_days = (datetime.strptime(check_out_date, '%Y-%m-%d').date() - datetime.strptime(check_in_date, '%Y-%m-%d').date()).days
                 if num_days > 0:
                     total_price = num_days * room.price
                     room.total_price = total_price
                 else:
                     total_price = room.price
 
-            context = { 
+            context = {
                 'form': form,
                 'available_rooms': available_rooms,
                 'check_in_date': check_in_date,
                 'check_out_date': check_out_date,
-
             }
             return render(request, 'cat_hotel/cat_hotels.html', context=context)
         else:
             form = SearchForm()
             return render(request, 'cat_hotel/cat_hotels.html', {'form': form})
+
 
 @login_required
 def completed(request):
@@ -210,8 +212,14 @@ def edit_completed(requset):
 def booking(requset): 
     return render(requset,'cat_hotel/booking.html')
 
-def booking_history(requset): 
-    return render(requset,'cat_hotel/booking_history.html')
+def book_history(requset): 
+    return render(requset,'cat_hotel/book_history.html')
+
+def cat_hotel(requset): 
+    return render(requset,'cat_hotel/cat_hotel.html')
+
+
+    #แชมป์การแข่งขัน ROV UBU 2023 รายการล่าสุด
 
 
 

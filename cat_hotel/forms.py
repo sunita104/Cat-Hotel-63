@@ -1,5 +1,6 @@
 from django import forms
 from cat_hotel.models import *
+from cat_hotel_admin.models import *
 from datetime import datetime
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
@@ -45,12 +46,14 @@ class BookingForm(forms.ModelForm):
 
     class Meta:
         model = Booking
-        fields = ['customer', 'room', 'start_date', 'end_date','cat_name', 'phone_number']
+        fields = ['customer','room', 'start_date', 'end_date', 'cat_name', 'phone_number']
         labels = {
-            'room' : 'ห้อง',
+            'room': 'ห้อง',
             'cat_name': 'ชื่อแมว',
             'phone_number': 'เบอร์ติดต่อ',
+            'total_price': 'ราคารวม',
         }
+
 
 class SearchForm(forms.Form):
     check_in_date = forms.DateField(widget=forms.DateInput(attrs={'type': 'date', 'format': 'yyyy-mm-dd'}), label='วันที่เข้าฝาก')

@@ -42,9 +42,6 @@ INSTALLED_APPS = [
     "crispy_forms", 
     'allauth',
     'allauth.account',
-
-    
-
     #App
     "cat_hotel.apps.CatHotelConfig",
     "cat_hotel_admin",

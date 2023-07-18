@@ -49,7 +49,7 @@
               <p><strong>ราคารวม:</strong> ฿{{ room.total_price }} บาท</p>
             </div>
             <div class="mb-3 text-center">
-              <a class="btn btn-outline-primary" href="{% url 'cat_hotel' room.room_number check_in_date check_out_date %}" data-abc="true">จอง</a>
+              <a class="btn btn-outline-primary" href="{% url 'booking_cat_hotel' room.room_number check_in_date check_out_date %}" data-abc="true">จอง</a>
             </div>
           </div>
         </div>

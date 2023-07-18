@@ -12,6 +12,7 @@ class Booking(models.Model):
     end_date = models.DateField(null=True, blank=False)
     cat_name = models.CharField(max_length=10, null=True, blank=False)
     phone_number = models.CharField(max_length=10, null=True, blank=False)
+    total_price = models.IntegerField(null=True, blank=False)
     confirm_status = models.BooleanField(default=False, null=True, blank=False)
     staying_status = models.BooleanField(default=False, null=True, blank=False)
 

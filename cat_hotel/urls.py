@@ -10,9 +10,12 @@ urlpatterns = [
     path('profile', views.profile, name='profile'),
     #path('cat_hotels', views.cat_hotels, name='cat_hotels'), change_password
 
-    path('cat_hotel/<int:room_number>/<str:check_in_date>/<str:check_out_date>/', views.cat_hotel, name='cat_hotel'),
+    path('cat_hotel/<int:room_number>/<str:check_in_date>/<str:check_out_date>/', views.booking_cat_hotel, name='booking_cat_hotel'),
+
+    path('cat_hotel', views.cat_hotel, name='cat_hotel'),
     path('completed', views.completed, name='completed'),
-    path('edit_completed', views.edit_completed, name='edit_completed'),
+    path('completed', views.completed, name='completed'),
+    path('edit_completed', views.booking_cat_hotel, name='booking_cat_hotel'),
 
     path('cat_hotels/', views.search_available_rooms, name='search_available_rooms'),
 
@@ -25,7 +28,7 @@ urlpatterns = [
     path('edit_profile/', views.edit_profile, name='edit_profile'),
     
     path('booking', views.booking, name='booking'),
-    path('booking_history', views.booking_history, name='ooking_history'),
+    path('book_history', views.book_history, name='book_history'),
 
 ]
 

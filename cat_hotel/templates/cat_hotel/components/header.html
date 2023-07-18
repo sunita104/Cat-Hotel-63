@@ -31,7 +31,8 @@
               <li class="nav-item" role="presentation"><a class="nav-link" href="{% url 'calendar' %}">Calendar</a></li>
               <li class="nav-item" role="presentation"><a class="nav-link" href="{% url 'search_available_rooms' %}">จองโรงแรมแมว</a></li>
               <li class="nav-item" role="presentation"><a class="nav-link" href="{% url 'completed' %}">การจอง</a></li>
-              <li class="nav-item" role="presentation"><a class="nav-link" href="">ประวัติการจอง</a></li>
+              <li class="nav-item" role="presentation"><a class="nav-link" href="{% url 'book_history' %}">ประวัติการจอง</a></li>
+
             </ul>
             {% if user.is_authenticated %}
             <form class="form-inline mr-auto">
