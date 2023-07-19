@@ -4,7 +4,7 @@
 {% load crispy_forms_tags %}
 
 
-<form method="POST">
+<form method="POST" action="">
     {% csrf_token %}
     <div class="container">
         <div class="card p-4 mt-5">
@@ -29,18 +29,6 @@
                 </div>
                 <div class="col-lg-6 col-md-12 ml-3">
                     <input type="text" name="cat_name" class="form-control" placeholder="Cat Name" required>
-                </div>
-                <div class="col-lg-6 col-md-12 ml-3">
-                    <input type="text" name="start_date" class="form-control" placeholder="start_date" required>
-                </div>
-                <div class="col-lg-6 col-md-12 ml-3">
-                    <input type="text" name="end_date" class="form-control" placeholder="end_date" required>
-                </div>
-                <div class="col-lg-6 col-md-12 ml-3">
-                    <input type="text" name="customer" class="form-control" placeholder="customer" required value="{{customer}}">
-                </div>
-                <div class="col-lg-6 col-md-12 ml-3">
-                    <input type="text" name="room" class="form-control" placeholder="room" required value="{{ one_room.room_number }}">
                 </div>
                 <div class="col-lg-5 col-md-10 ml-3">
                     <input type="text" name="phone_number" class="form-control" placeholder="Phone Number" required>
