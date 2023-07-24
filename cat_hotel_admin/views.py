@@ -212,6 +212,7 @@ def confirm_booking_admin(request, booking_id):
     if booking.staying_status:
         return redirect('booking_admin')
 
+    booking.waiting_confirm = False
     booking.confirm_status = True
     booking.save()
     return redirect('confirmed_booking_request')
@@ -222,7 +223,8 @@ def confirm_booking(request, booking_id):
 
     if booking.staying_status :
         return redirect('confirmed_booking_request')
-        
+    
+    booking.waiting_confirm = False
     booking.confirm_status = False
     booking.staying_status = True
     booking.save()
@@ -251,6 +253,27 @@ def end_stay(request, booking_id):
 
     return redirect('booking_history')
 
+def cancel_booking_admin(request, booking_id):
+    if request.method == 'POST':
+        booking = Booking.objects.get(id=booking_id)
+        reason_text = request.POST.get('reason_text')
+
+        cancellation_reason = CancellationReason(
+            customer=booking.customer,
+            room=booking.room,
+            start_date=booking.start_date,
+            end_date=booking.end_date,
+            cat_name=booking.cat_name,
+            phone_number=booking.phone_number,
+            reason_text=reason_text
+        )
+
+        cancellation_reason.save()
+        booking.delete()
+        return redirect('booking_admin')
+
+    return render(request, 'cat_hotel_admin/cancel_booking_admin.html')
+     
 
 #dashboard
 

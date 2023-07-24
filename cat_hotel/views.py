@@ -1,5 +1,5 @@
 from django.http import HttpResponse
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
 from cat_hotel_admin.models import *
 from cat_hotel.forms import *
@@ -98,8 +98,7 @@ def register(request):
     return render(request, 'cat_hotel/register.html', {'form': form})
 
 
-# cat_hotel view
-from datetime import datetime
+# booking_
 
 @login_required
 def booking_cat_hotel(request, room_number, check_in_date, check_out_date):
@@ -114,6 +113,7 @@ def booking_cat_hotel(request, room_number, check_in_date, check_out_date):
         start_date = datetime.strptime(check_in_date.strip('. ').strip(), '%Y-%m-%d').date()
         end_date = datetime.strptime(check_out_date.strip('. ').strip(), '%Y-%m-%d').date()
         total_price = total_price
+        waiting_confirm = True
         confirm_status = False
         staying_status = False
         booking = Booking(
@@ -139,8 +139,67 @@ def booking_cat_hotel(request, room_number, check_in_date, check_out_date):
     }
     return render(request, 'cat_hotel/cat_hotel.html', context=context)
 
+@login_required
+def completed(request):
+    booking = Booking.objects.all()
+
+    context = {
+        'booking': booking
+    }
+    return render(request, 'cat_hotel/completed.html', context=context)
+
+def edit_booking(request, pk):
+    booking = get_object_or_404(Booking, pk=pk)
+
+    if booking.confirm_status:
+        messages.error(request, 'การจองนี้ได้รับการยืนยันแล้วและไม่สามารถแก้ไขได้')
+        return redirect('completed')
+
+    elif booking.staying_status:
+        messages.error(request, 'การจองนี้ได้รับการยืนยันการเข้าพักแล้วและไม่สามารถแก้ไขได้')
+        return redirect('completed')
+    
+    if request.method == 'POST':
+        cat_name = request.POST.get('cat_name')
+        phone_number = request.POST.get('phone_number')
+        booking.cat_name = cat_name
+        booking.phone_number = phone_number
+        booking.save()
+
+        return redirect('completed')
+
+    context = {
+        'booking': booking,
+    }
+    return render(request, 'cat_hotel/edit_booking.html', context)
 
 
+def cancel_booking(request, pk):
+    booking = get_object_or_404(Booking, pk=pk)
+
+    if booking.staying_status:
+        messages.error(request, 'การจองนี้ได้รับการยืนยันการเข้าพักแล้วและไม่สามารถยกเลิกได้')
+        return redirect('completed')
+
+    if request.method == 'POST':
+        booking.delete()
+        return redirect('completed')
+
+    context = {
+        'booking': booking,
+    }
+    return render(request, 'cat_hotel/completed.html', context)
+
+@login_required
+def book_history(request):
+    book_history = BookingHistory.objects.filter(customer_b=request.user).order_by('-start_date')
+    cancellation_reason = CancellationReason.objects.filter(customer=request.user).order_by('-start_date')
+
+    context = {
+        'book_history': book_history,
+        'cancellation_reason': cancellation_reason
+    }
+    return render(request, 'cat_hotel/book_history.html', context)
 
 
 @login_required
@@ -175,15 +234,7 @@ def search_available_rooms(request):
             form = SearchForm()
             return render(request, 'cat_hotel/cat_hotels.html', {'form': form})
 
-
-@login_required
-def completed(request):
-    booking = Booking.objects.all()
-
-    context = {
-        'booking': booking
-    }
-    return render(request, 'cat_hotel/completed.html', context=context)
+#calendar
 
 def calendar(request):
     all_booking = Booking.objects.all()
@@ -213,9 +264,6 @@ def calendar(request):
     }
     return render(request,'cat_hotel/calendar.html',context)
 
-def edit(request):
-    return render(request, 'cat_hotel/completed.html')
-    
 
 def edit_completed(requset):
     return render(requset,'cat_hotel/edit_completed.html')
@@ -223,14 +271,12 @@ def edit_completed(requset):
 def booking(requset): 
     return render(requset,'cat_hotel/booking.html')
 
-def book_history(requset): 
-    return render(requset,'cat_hotel/book_history.html')
 
 def cat_hotel(requset): 
     return render(requset,'cat_hotel/cat_hotel.html')
 
 
-    #แชมป์การแข่งขัน ROV UBU 2023 รายการล่าสุด
+
 
 
 

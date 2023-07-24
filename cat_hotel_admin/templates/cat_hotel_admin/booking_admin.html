@@ -45,7 +45,7 @@
             <td>
               <a href="{% url 'confirm_booking_admin' booking.id %}" class="btn btn-primary">ยืนยัน</a>
             </td>
-            <td><a href="#" class="btn btn-sm btn-danger">ยกเลิก</a></td>
+            <td><a href="{% url 'cancel_booking_admin' booking.id %}" class="btn btn-sm btn-danger">ยกเลิก</a></td>
           </tr>
           {% endfor %}
         </tbody>

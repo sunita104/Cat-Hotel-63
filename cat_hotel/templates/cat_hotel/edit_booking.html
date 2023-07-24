@@ -1,0 +1,49 @@
+{% extends 'cat_hotel/components/base.html' %}
+{% block content %}
+
+<div class="container">
+    <div class="card p-4 mt-5 mb-5 ">
+        <form method="POST">
+            {% csrf_token %}
+            <div class="">
+                <div class="col-12 mb-4">
+                    <h4 class="text-primary">แก้ไขการจองห้องพักแมว</h4>
+                </div>
+                <div class="col-lg-6 col-md-12 ">
+                    <div class="form-floating">
+                        <h6>ห้องพัก: {{ booking.room }}</h6>
+                    </div>
+                </div>
+                <br>
+                <div class="col-lg-6 col-md-12 ">
+                    <div class="form-floating">
+                        <h6>วันที่เข้าฝาก: {{ booking.start_date }}</h6>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-12 ">
+                    <div class="form-floating">
+                        <h6>ฝากถึงวันที่: {{ booking.end_date }}</h6>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-12 mt-4">
+                    <div class="form-floating">
+                        <label for="cat_name">ชื่อแมว</label>
+                        <input type="text" name="cat_name" class="form-control" placeholder="Cat Name" value="{{ booking.cat_name }}" required>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-12 mt-4">
+                    <div class="form-floating">
+                        <label for="phone_number">เบอร์ติดต่อ</label>
+                        <input type="text" name="phone_number" class="form-control" placeholder="Phone Number" value="{{ booking.phone_number }}" required>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 mt-4 ">
+                <a href="{% url 'completed' %}"  class="btn btn-danger text-uppercase" type="button">ยกเลิก</a>
+                <button class="btn btn-warning text-uppercase" type="submit">ยืนยัน<i class="fa fa-plane ms-3"></i></button>
+            </div>
+        </form>
+    </div>
+</div>
+
+{% endblock %}

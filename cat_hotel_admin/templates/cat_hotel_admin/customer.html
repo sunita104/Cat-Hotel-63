@@ -22,7 +22,6 @@
               <th>First Name</th>
               <th>Last Name</th>
               <th>Email</th>
-              <th>เบอร์ติดต่อ</th>
             </tr>
           </thead>
           <tbody>
@@ -33,11 +32,10 @@
               <td>{{ customer.first_name }}</td>  
               <td>{{ customer.last_name }}</td>
               <td>{{ customer.email }}</td>
-              <td>{{ customer.phone_number }}</td>
             </tr>
             {% empty %}
             <tr>
-              <td colspan="6" class="text-center">No customers found.</td>
+              <td colspan="6" class="text-center">ไม่พบลูกค้า</td>
             </tr>
             {% endfor %}
           </tbody>

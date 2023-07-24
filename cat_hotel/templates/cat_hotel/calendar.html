@@ -28,7 +28,7 @@
             events: [
                 {% for i in all_booking %}
                 {
-                    title: "{{ i.room.room_number}}",
+                    title: "ห้อง {{ i.room.room_number}}",
                     start: '{{ i.start_date|date:"Y-m-d" }}',
                     end: '{{ i.end_date|date:"Y-m-d"}}T23:59:00',
                     allDay:  false ,

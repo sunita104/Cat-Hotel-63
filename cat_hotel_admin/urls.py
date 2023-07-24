@@ -45,6 +45,10 @@ urlpatterns = [
     path('admin_login', views.admin_login, name='admin_login'),
     path('profile_admin', views.profile_admin, name='profile_admin'),
 
+    #CancellationReason
+    path('cancel_booking_admin/<int:booking_id>/', views.cancel_booking_admin, name='cancel_booking_admin'),
+    
+
 
 
 

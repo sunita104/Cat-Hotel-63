@@ -1,0 +1,30 @@
+{% extends 'cat_hotel_admin/components/base.html' %}
+
+{% block content %}
+
+<div class="container mt-5">
+  <div class="card">
+    <div class="card-header">
+      <h5 class="m-0 font-weight-bold text-primary">ยกเลิกการจอง</h5>
+    </div>
+    <div class="card-body">
+      <form method="post">
+        {% csrf_token %}
+        <div class="form-group">
+          <label for="reason_text">เหตุผลในการยกเลิกการจอง</label>
+          <textarea class="form-control" id="reason_text" name="reason_text" rows="4" required></textarea>
+        </div>
+        <button type="submit" class="btn btn-danger">ยกเลิกการจอง</button>
+        <a href="{% url 'booking_admin' %}" class="btn btn-secondary">ยกเลิก</a>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+
+
+
+
+
+

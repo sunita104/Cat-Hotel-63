@@ -15,7 +15,8 @@ urlpatterns = [
     path('cat_hotel', views.cat_hotel, name='cat_hotel'),
     path('completed', views.completed, name='completed'),
     path('completed', views.completed, name='completed'),
-    path('edit_completed', views.booking_cat_hotel, name='booking_cat_hotel'),
+    path('edit_booking/<int:pk>/', views.edit_booking, name='edit_booking'),
+    path('completed/<int:pk>/', views.cancel_booking, name='cancel_booking'),
 
     path('cat_hotels/', views.search_available_rooms, name='search_available_rooms'),
 

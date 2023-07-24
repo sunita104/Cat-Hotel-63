@@ -12,7 +12,6 @@
                 <div class="col-12 mb-4">
                     <div class="col-12 mb-4">
                         <h4>Room {{ one_room.room_number }}</h4>
-                        <h1>User {{customer}}</h1>
                         <span class="text-muted">{{ one_room.description }}</span>
                         <input type="hidden" name="room_number" value="{{ one_room.room_number }}">
                     </div>
@@ -56,11 +55,4 @@
     </ul>
   {% endif %}
 </form>
-
-
-
-
-
-
-
 {% endblock %}
