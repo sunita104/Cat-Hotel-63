@@ -36,6 +36,7 @@ urlpatterns = [
     path('currently_staying/', views.search_currently_staying, name='search_currently_staying'),
     path('booking_history/', views.search_booking_history, name='search_booking_history'),
     path('search_customer/', views.search_customer, name='search_customer'),
+    path('canceled_booking/', views.search_canceled_booking, name='search_canceled_booking'),
 
     #customer 
     path('customer', views.customer, name='customer'),
@@ -45,8 +46,9 @@ urlpatterns = [
     path('admin_login', views.admin_login, name='admin_login'),
     path('profile_admin', views.profile_admin, name='profile_admin'),
 
-    #CancellationReason
+    #CancellationReason canceled_booking
     path('cancel_booking_admin/<int:booking_id>/', views.cancel_booking_admin, name='cancel_booking_admin'),
+    path('canceled_booking', views.canceled_booking, name='canceled_booking'),
     
 
 

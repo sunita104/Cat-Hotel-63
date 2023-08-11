@@ -53,7 +53,7 @@
             <div class="row align-items-center">
               <div class="col mr-2">
                 <div class="text-xs font-weight-bold text-white mb-1"><i class="bi bi-calendar2-minus-fill"></i>
-                  รายได้้ทั้งหมด</div>
+                  รายรับทั้งหมด</div>
                 <div class="h5 mb-0 font-weight-bold text-white">{{ income_summary.total_income }} บาท</div>
               </div>
             </div>
@@ -65,7 +65,7 @@
 </div>
 <hr width="1350">
 <div class='container mt-3'>
-  <h5>สรุปรายได้ตามเดือน</h5>
+  <h5>สรุปรายรับตามเดือน</h5>
   <div class="d-flex justify-content-end mb-3">
     <form class="form-inline" id="yearForm">
       <input type="text" class="form-control" name="year" id="year" placeholder="ป้อนข้อมูลปี ค.ศ." />
@@ -74,9 +74,9 @@
   </div>
   <div class="mt-4 ml-5 text-info">
     {% if total_income %}
-      รายได้ในปีปัจจุบันคือ: {{ total_income }} 
+      รายรับในปีปัจจุบันคือ: {{ total_income }} 
     {% else %}
-      รายได้ของปี {{ selected_year }} คือ: {{ total_income }} บาท
+      รายรับของปี {{ selected_year }} คือ: {{ total_income }} บาท
     {% endif %}
   </div>
 
@@ -114,28 +114,8 @@
           }
         });
       });
-  
-      $('#totalIncomeButton').click(function () {
-        var year = $('#year').val();
-  
-        $.ajax({
-          url: '/admin/dashboard/',
-          type: 'GET',
-          data: { year: year },
-          success: function (response) {
-            var totalIncome = response.total_income;
-            displayTotalIncome(totalIncome);
-          }
-        });
-      });
-  
-      var initialMonthlyIncome = {{ monthly_income_data }};
-      var initialMonths = {{ months }};
-      var initialTotalIncome = {{ total_income }};
-      updateChart(initialMonthlyIncome, initialMonths);
-      displayTotalIncome(initialTotalIncome);
-    });
-  
+    
+
     function updateChart(monthlyIncome, months) {
       const ctx = document.getElementById('myChart').getContext('2d');
       if (window.myChart) {

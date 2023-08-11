@@ -10,7 +10,7 @@ class Booking(models.Model):
     room = models.ForeignKey(Room, on_delete=models.CASCADE, null=True, blank=False)
     start_date = models.DateField(null=True, blank=False)
     end_date = models.DateField(null=True, blank=False)
-    #cat = models.IntegerField(default=1,null=True, blank=False)
+    cat = models.IntegerField(default=1,null=True, blank=False)
     cat_name = models.CharField(max_length=10, null=True, blank=False)
     phone_number = models.CharField(max_length=10, null=True, blank=False)
     total_price = models.IntegerField(null=True, blank=False)
@@ -38,6 +38,7 @@ class CancellationReason(models.Model):
     end_date = models.DateField(null=True, blank=False)
     cat_name = models.CharField(max_length=10, null=True, blank=False)
     cat = models.IntegerField(null=True, blank=False)
+    total_price = models.IntegerField(null=True, blank=False)
     phone_number = models.CharField(max_length=10, null=True, blank=False)
     reason_text = models.TextField()
 
@@ -52,6 +53,7 @@ class BookingHistory(models.Model):
     end_date = models.DateField(null=True, blank=False)
     cat_name = models.CharField(max_length=10, null=True, blank=False)
     cat = models.IntegerField(null=True, blank=False)
+    total_price = models.IntegerField(null=True, blank=False)
     phone_number = models.CharField(max_length=10, null=True, blank=False)
     checked_out = models.BooleanField(default=False, null=True, blank=False)
 

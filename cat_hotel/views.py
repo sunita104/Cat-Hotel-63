@@ -103,29 +103,38 @@ def register(request):
 @login_required
 def booking_cat_hotel(request, room_number, check_in_date, check_out_date):
     one_room = Room.objects.get(room_number=room_number)
-    num_days = (datetime.strptime(check_out_date, '%Y-%m-%d').date() - datetime.strptime(check_in_date.strip('. ').strip(), '%Y-%m-%d').date()).days
+    num_days = (datetime.strptime(check_out_date, '%Y-%m-%d').date() - datetime.strptime(check_in_date, '%Y-%m-%d').date()).days
     total_price = num_days * one_room.price
+
     if request.method == 'POST':
-        customer = request.user
-        room = one_room
         cat_name = request.POST.get('cat_name')
         phone_number = request.POST.get('phone_number')
-        start_date = datetime.strptime(check_in_date.strip('. ').strip(), '%Y-%m-%d').date()
-        end_date = datetime.strptime(check_out_date.strip('. ').strip(), '%Y-%m-%d').date()
+        start_date = datetime.strptime(check_in_date, '%Y-%m-%d').date()
+        end_date = datetime.strptime(check_out_date, '%Y-%m-%d').date()
         total_price = total_price
-        waiting_confirm = True
-        confirm_status = False
-        staying_status = False
+
+        if int(request.POST.get('cat', 1)) > one_room.cat:
+            messages.error(request, 'จำนวนแมวเกินจำนวนสูงสุดที่อนุญาตในห้องพักแมว')
+            return render(request, 'cat_hotel/cat_hotel.html', {
+                "customer": request.user,
+                "one_room": one_room,
+                "check_in_date": check_in_date,
+                "check_out_date": check_out_date,
+                "total_price": total_price,
+            })
+
         booking = Booking(
-            customer = customer,
-            room = room,
-            cat_name = cat_name,
-            phone_number = phone_number,
-            start_date = start_date,
-            end_date = end_date,
-            total_price = total_price,
-            confirm_status = confirm_status,
-            staying_status = staying_status
+            customer=request.user,
+            room=one_room,
+            cat=int(request.POST.get('cat', 1)),
+            cat_name=cat_name,
+            phone_number=phone_number,
+            start_date=start_date,
+            end_date=end_date,
+            total_price=total_price,
+            waiting_confirm=True,
+            confirm_status=False,
+            staying_status=False,
         )
         booking.save()
         return redirect('completed')
@@ -139,15 +148,17 @@ def booking_cat_hotel(request, room_number, check_in_date, check_out_date):
     }
     return render(request, 'cat_hotel/cat_hotel.html', context=context)
 
+
 @login_required
 def completed(request):
-    booking = Booking.objects.all()
+    booking = Booking.objects.filter(customer=request.user)
 
     context = {
         'booking': booking
     }
     return render(request, 'cat_hotel/completed.html', context=context)
 
+@login_required
 def edit_booking(request, pk):
     booking = get_object_or_404(Booking, pk=pk)
 
@@ -162,8 +173,15 @@ def edit_booking(request, pk):
     if request.method == 'POST':
         cat_name = request.POST.get('cat_name')
         phone_number = request.POST.get('phone_number')
+        new_cat = int(request.POST.get('cat', 1))
+
+        if new_cat > booking.room.cat:
+            messages.warning(request, 'ไม่สามารถแก้ไขได้เนื่องจากจำนวนแมวเกินจำนวนสูงสุดที่อนุญาตในห้องพักแมว')
+            return redirect('completed')
+
         booking.cat_name = cat_name
         booking.phone_number = phone_number
+        booking.cat = new_cat
         booking.save()
 
         return redirect('completed')
@@ -174,6 +192,7 @@ def edit_booking(request, pk):
     return render(request, 'cat_hotel/edit_booking.html', context)
 
 
+@login_required
 def cancel_booking(request, pk):
     booking = get_object_or_404(Booking, pk=pk)
 
@@ -192,8 +211,8 @@ def cancel_booking(request, pk):
 
 @login_required
 def book_history(request):
-    book_history = BookingHistory.objects.filter(customer_b=request.user).order_by('-start_date')
-    cancellation_reason = CancellationReason.objects.filter(customer=request.user).order_by('-start_date')
+    book_history = BookingHistory.objects.filter(customer_b=request.user)
+    cancellation_reason = CancellationReason.objects.filter(customer=request.user)
 
     context = {
         'book_history': book_history,
@@ -235,7 +254,7 @@ def search_available_rooms(request):
             return render(request, 'cat_hotel/cat_hotels.html', {'form': form})
 
 #calendar
-
+@login_required
 def calendar(request):
     all_booking = Booking.objects.all()
     get_booking_types = Booking.objects.only('booking_type')

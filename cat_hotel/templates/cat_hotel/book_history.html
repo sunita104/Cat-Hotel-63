@@ -28,10 +28,10 @@
             <td class="text-primary">{{ booking.room }}</td>
             <td>{{ booking.start_date }}</td>
             <td>{{ booking.end_date }}</td>
-            <td>{{ booking.cat_name }}</td>
             <td>{{ booking.cat }}</td>
+            <td>{{ booking.cat_name }}</td>
             <td>{{ booking.phone_number }}</td>
-            <td>{{ booking.room.price }}</td>
+            <td>{{ booking.total_price}}</td>
             <td>
               <span class="badge badge-success">เช็คเอ้าสำเร็จ</span>
             </td>
@@ -43,10 +43,10 @@
             <td class="text-primary">{{ cancellation_reason.room }}</td>
             <td>{{ cancellation_reason.start_date }}</td>
             <td>{{ cancellation_reason.end_date }}</td>
-            <td>{{ cancellation_reason.cat_name }}</td>
             <td>{{ cancellation_reason.cat }}</td>
+            <td>{{ cancellation_reason.cat_name }}</td>
             <td>{{ cancellation_reason.phone_number }}</td>
-            <td>{{ cancellation_reason.room.price }}</td>       
+            <td>{{ cancellation_reason.total_price }}</td>       
             <td>
               <span class="badge badge-danger">การจองไม่สำเร็จ</span>
             </td>

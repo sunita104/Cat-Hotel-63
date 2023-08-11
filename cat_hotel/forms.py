@@ -14,18 +14,18 @@ class LoginForm(AuthenticationForm):
     password = forms.CharField(label='รหัสผ่าน', widget=forms.PasswordInput)
 
 class RegisterForm(UserCreationForm):
-    first_name = forms.CharField(max_length=100, help_text='fist Name')
-    last_name = forms.CharField(max_length=100, help_text='Last Name')
-    email = forms.EmailField(max_length=150, help_text='Email')
+    first_name = forms.CharField(max_length=100,label='ชื่อ')
+    last_name = forms.CharField(max_length=100,label='นามสกุล')
+    email = forms.EmailField(max_length=150)
 
     class Meta:
         model = User
         fields = ['username', 'first_name', 'last_name','email', 'password1', 'password2',]
 
 class EditProfileForm(UserChangeForm):
-    first_name = forms.CharField(max_length=100, help_text='First Name')
-    last_name = forms.CharField(max_length=100, help_text='Last Name')
-    email = forms.EmailField(max_length=150, help_text='Email')
+    first_name = forms.CharField(max_length=100,label='ชื่อ')
+    last_name = forms.CharField(max_length=100,label='นามสกุล')
+    email = forms.EmailField(max_length=150)
 
     class Meta:
         model = User

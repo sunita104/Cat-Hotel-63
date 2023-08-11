@@ -18,16 +18,15 @@
         <thead class="thead-light">
           <tr>
             <th>ID</th>
-            <th>Room Number</th>
-            <th>Customer</th>
+            <th>ห้อง</th>
+            <th>ชื่อ-นามสกุล</th>
             <th>วันที่เข้าฝาก</th>
             <th>ฝากถึงวันที่</th>
             <th>จำนวนแมว</th>
             <th>ชื่อแมว</th>
             <th>เบอร์ติดต่อ</th>
             <th>ราคา/บาท</th>
-            <th>ยืนยัน</th>
-            <th>ยกเลิก</th>
+            <th>ยืนยันการเช็คเอาท์</th>
           </tr>
         </thead>
         <tbody>
@@ -35,17 +34,16 @@
           <tr>
             <td>{{ booking.id }}</td>
             <td class="text-primary">{{ booking.room }}</td>
-            <td>{{ booking.customer }}</td>
+            <td>{{ booking.customer.first_name }} {{ booking.customer.last_name }}</td>
             <td>{{ booking.start_date }}</td>
             <td>{{ booking.end_date }}</td>
             <td>{{ booking.cat }}</td>
             <td>{{ booking.cat_name }}</td>
             <td>{{ booking.phone_number }}</td>
-            <td>{{ booking.room.price }}</td>
+            <td>{{ booking.total_price}}</td>
             <td>
-              <a href="{% url 'end_stay' booking.id  %}" class="btn btn-primary">ยืนยัน</a>
-            </td>
-            <td><a href="#" class="btn btn-sm btn-danger">ยกเลิก</a></td>
+              <a href="{% url 'end_stay' booking.id  %}" class="btn btn-sm btn-primary">ยืนยัน</a>
+            </td>      
           </tr>
           {% endfor %}
         </tbody>

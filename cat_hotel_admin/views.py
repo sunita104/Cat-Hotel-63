@@ -36,6 +36,7 @@ import json
 from django.contrib.auth.decorators import login_required
 from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib.auth import get_user_model
+from django.db import IntegrityError
 
 
 #admin
@@ -72,8 +73,11 @@ def manage_cat_hotel_admin(request):
     if request.method == 'POST':
         form = ManageCatHotelForm(request.POST, request.FILES)
         if form.is_valid():
-            form.save()
-            return redirect('manage_cat_hotel_admin')
+            try:
+                form.save()
+                return redirect('manage_cat_hotel_admin')
+            except IntegrityError:
+                form.add_error(' ')
     else:
         form = ManageCatHotelForm()
 
@@ -85,6 +89,7 @@ def manage_cat_hotel_admin(request):
     }
 
     return render(request, 'cat_hotel_admin/manage_cat_hotel_admin.html', context=context)
+
 
 @staff_member_required(login_url='admin_login')
 def edit_room(request, pk):
@@ -113,7 +118,8 @@ def delete_room(request, pk):
     room = get_object_or_404(Room, pk=pk)
 
     if room.booking_set.exists():
-        return HttpResponse("Cannot delete a room that has bookings.")
+        messages.error(request, "ไม่สามารถลบห้องที่มีการจองได้")
+        return redirect('manage_cat_hotel_admin')
 
     if request.method == 'POST':
         room.delete()
@@ -240,7 +246,9 @@ def end_stay(request, booking_id):
         room=booking.room,
         start_date=booking.start_date,
         end_date=booking.end_date,
+        cat=booking.cat,
         cat_name=booking.cat_name,
+        total_price=booking.total_price,
         phone_number=booking.phone_number,
         checked_out=True
     )
@@ -253,6 +261,7 @@ def end_stay(request, booking_id):
 
     return redirect('booking_history')
 
+@staff_member_required(login_url='admin_login')
 def cancel_booking_admin(request, booking_id):
     if request.method == 'POST':
         booking = Booking.objects.get(id=booking_id)
@@ -263,7 +272,9 @@ def cancel_booking_admin(request, booking_id):
             room=booking.room,
             start_date=booking.start_date,
             end_date=booking.end_date,
+            cat=booking.cat,
             cat_name=booking.cat_name,
+            total_price=booking.total_price,
             phone_number=booking.phone_number,
             reason_text=reason_text
         )
@@ -279,10 +290,10 @@ def cancel_booking_admin(request, booking_id):
 
 def calculate_income_summary():
     today = date.today()
-    day_income = Booking.objects.filter(start_date=today, staying_status=True).aggregate(Sum('room__price'))['room__price__sum'] or 0.0
-    month_income = BookingHistory.objects.filter(start_date__month=today.month).aggregate(Sum('room__price'))['room__price__sum'] or 0.0
-    year_income = BookingHistory.objects.filter(start_date__year=today.year).aggregate(Sum('room__price'))['room__price__sum'] or 0.0
-    total_income = BookingHistory.objects.aggregate(Sum('room__price'))['room__price__sum'] or 0.0
+    day_income = Booking.objects.filter(start_date=today, staying_status=True).aggregate(Sum('total_price'))['total_price__sum'] or 0.0
+    month_income = BookingHistory.objects.filter(start_date__month=today.month, checked_out=True).aggregate(Sum('total_price'))['total_price__sum'] or 0.0
+    year_income = BookingHistory.objects.filter(start_date__year=today.year, checked_out=True).aggregate(Sum('total_price'))['total_price__sum'] or 0.0
+    total_income = BookingHistory.objects.filter(checked_out=True).aggregate(Sum('total_price'))['total_price__sum'] or 0.0
 
     income_summary, created = IncomeSummary.objects.get_or_create(date=today)
     income_summary.day_income = day_income
@@ -312,7 +323,6 @@ def dashboard(request):
         months.append(all_months[month - 1])
 
     total_income = income_summaries.last().year_income if income_summaries.exists() else 0
-    #print(total_income)
     income_summary = calculate_income_summary()
 
     context = {
@@ -328,13 +338,22 @@ def dashboard(request):
 
 #search fution
 
-
+@staff_member_required(login_url='admin_login')
 def search_booking_admin(request):
     search_query = request.GET.get('query')
     bookings = Booking.objects.filter(staying_status=False, confirm_status=False)
 
     if search_query:
-        bookings = bookings.filter(customer__username__icontains=search_query)
+        bookings = bookings.filter(
+            Q(customer__username__icontains=search_query) |
+            Q(room__room_number__icontains=search_query) |
+            Q(customer__first_name__icontains=search_query) |
+            Q(customer__last_name__icontains=search_query) |
+            Q(cat_name__icontains=search_query) |
+            Q(phone_number__icontains=search_query) |
+            Q(start_date__icontains=search_query) |
+            Q(end_date__icontains=search_query)
+        )
 
     context = {
         'bookings': bookings,
@@ -343,13 +362,22 @@ def search_booking_admin(request):
 
     return render(request, 'cat_hotel_admin/booking_admin.html', context=context)
 
-
+@staff_member_required(login_url='admin_login')
 def search_confirm_booking_admin(request):
     search_query = request.GET.get('query')
     bookings = Booking.objects.filter(confirm_status=True)
 
     if search_query:
-        bookings = bookings.filter(customer__username__icontains=search_query)
+        bookings = bookings.filter(
+            Q(customer__username__icontains=search_query) |
+            Q(room__room_number__icontains=search_query) |
+            Q(customer__first_name__icontains=search_query) |
+            Q(customer__last_name__icontains=search_query) |
+            Q(cat_name__icontains=search_query) |
+            Q(phone_number__icontains=search_query) |
+            Q(start_date__icontains=search_query) |
+            Q(end_date__icontains=search_query)
+        )
 
     context = {
         'bookings': bookings,
@@ -359,33 +387,78 @@ def search_confirm_booking_admin(request):
     return render(request, 'cat_hotel_admin/confirmed_booking_request.html', context=context)
 
 
+@staff_member_required(login_url='admin_login')
 def search_currently_staying(request):
     search_query = request.GET.get('query')
     bookings = Booking.objects.filter(staying_status=True)
 
     if search_query:
-        bookings = bookings.filter(customer__username__icontains=search_query)
+        bookings = bookings.filter(
+            Q(customer__username__icontains=search_query) |
+            Q(room__room_number__icontains=search_query) |
+            Q(customer__first_name__icontains=search_query) |
+            Q(customer__last_name__icontains=search_query) |
+            Q(cat_name__icontains=search_query) |
+            Q(phone_number__icontains=search_query) |
+            Q(start_date__icontains=search_query) |
+            Q(end_date__icontains=search_query)
+        )
 
     context = {
         "bookings": bookings,
         'search_query': search_query
     }
-    
+
     return render(request, "cat_hotel_admin/currently_staying.html", context=context)
 
-
+@staff_member_required(login_url='admin_login')
 def search_booking_history(request):
     search_query = request.GET.get('query')
-    booking_history = BookingHistory.objects.filter(customer_b__username__icontains=search_query) 
+    booking_history = BookingHistory.objects.all()
+
+    if search_query:
+        booking_history = booking_history.filter(
+            Q(customer_b__username__icontains=search_query) |
+            Q(room__room_number__icontains=search_query) |
+            Q(customer_b__first_name__icontains=search_query) |
+            Q(customer_b__last_name__icontains=search_query) |
+            Q(cat_name__icontains=search_query) |
+            Q(phone_number__icontains=search_query) |
+            Q(start_date__icontains=search_query) |
+            Q(end_date__icontains=search_query)
+        )
 
     context = {
         'booking_history': booking_history,
         'search_query': search_query
     }
 
-    return render(request, 'cat_hotel_admin/booking_history.html', context)
+    return render(request, 'cat_hotel_admin/booking_history.html', context=context)
 
+@staff_member_required(login_url='admin_login')
+def search_canceled_booking(request):
+    search_query = request.GET.get('query')
+    canceled_bookings = CancellationReason.objects.all()
 
+    if search_query:
+        canceled_bookings = canceled_bookings.filter(
+            Q(customer__username__icontains=search_query) |
+            Q(room__room_number__icontains=search_query) |
+            Q(customer__first_name__icontains=search_query) |
+            Q(customer__last_name__icontains=search_query) |
+            Q(cat_name__icontains=search_query) |
+            Q(phone_number__icontains=search_query) |
+             Q(start_date__icontains=search_query) |
+            Q(end_date__icontains=search_query)
+        )
+
+    context = {
+        'canceled_bookings': canceled_bookings,
+        'search_query': search_query
+    }
+    return render(request, 'cat_hotel_admin/canceled_booking.html', context)
+
+@staff_member_required(login_url='admin_login')
 def search_customer(request):
     search_query = request.GET.get('query', '')
     customers = get_user_model().objects.filter(
@@ -399,6 +472,7 @@ def search_customer(request):
         'search_query': search_query
     }
     return render(request, 'cat_hotel_admin/customer.html', context)
+
 #costomer
 
 @staff_member_required(login_url='admin_login')
@@ -415,6 +489,7 @@ def customer(request):
 
 #cancel booking
 
+@staff_member_required(login_url='admin_login')
 def cancel_booking(request, booking_id):
     booking = get_object_or_404(Booking, id=booking_id)
 
@@ -428,6 +503,15 @@ def cancel_booking(request, booking_id):
         'booking': booking
     }
     return render(request, 'cat_hotel_admin/cancel_booking.html', context)
+
+@staff_member_required(login_url='admin_login')
+def canceled_booking(request):
+    canceled_bookings = CancellationReason.objects.all()
+
+    context = {
+        'canceled_bookings': canceled_bookings,
+    }
+    return render(request, 'cat_hotel_admin/canceled_booking.html', context)
 
     
 '''

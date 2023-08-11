@@ -9,7 +9,7 @@ from django.contrib.auth.models import AbstractUser
 
 class Room(models.Model):
     image = models.FileField(upload_to='rooms/image',null=True, blank=True)
-    room_number = models.CharField(max_length=10, null=True, blank=False)
+    room_number = models.CharField(max_length=10, unique=True, null=True, blank=False)
     description = models.TextField(max_length=255, null=True, blank=False)
     cat = models.IntegerField(default=1,null=True, blank=False)
     price = models.IntegerField(null=True, blank=False)

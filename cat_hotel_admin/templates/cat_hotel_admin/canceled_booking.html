@@ -1,23 +1,22 @@
 {% extends 'cat_hotel_admin/components/base_booking_information.html' %}
 {% block booking_information %}
-
 <div class="col-xl-10 col-lg-7 mb-4 ml-3">
   <div class="d-flex justify-content-end mb-3">
-    <form class="form-inline" method="GET" action="{% url 'search_booking_admin' %}">
+    <form class="form-inline" method="GET" action="{% url 'search_canceled_booking' %}">
       <input type="text" class="form-control" name="query" placeholder="Search" value="{{ search_query }}">
       <button type="submit" class="btn btn-primary ml-2">Search</button>
     </form>
   </div>
   <div class="card">
     <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-      <h5 class="m-0 font-weight-bold text-primary">คำขอการจอง</h5>
+      <h5 class="m-0 font-weight-bold text-primary">การจองที่ถูกยกเลิก</h5>
     </div>
-    {% if bookings %}
+    {% if canceled_bookings %}
     <div class="table-responsive pd-3">
       <table class="table align-items-center table-flush">
         <thead class="thead-light">
           <tr>
-            <th>ID</th>
+            <th class="text-sm">ID</th>
             <th>ห้อง</th>
             <th>ชื่อ-นามสกุล</th>
             <th>วันที่เข้าฝาก</th>
@@ -26,26 +25,22 @@
             <th>ชื่อแมว</th>
             <th>เบอร์ติดต่อ</th>
             <th>ราคา/บาท</th>
-            <th>ยืนยัน</th>
-            <th>ยกเลิก</th>
+            <th>หมายเหตุ</th>
           </tr>
         </thead>
         <tbody>
-          {% for booking in bookings %}
+          {% for canceled_booking in canceled_bookings %}
           <tr>
-            <td>{{ booking.id }}</td>
-            <td class="text-primary">{{ booking.room }}</td>
-            <td>{{ booking.customer.first_name }} {{ booking.customer.last_name }}</td>
-            <td>{{ booking.start_date }}</td>
-            <td>{{ booking.end_date }}</td>
-            <td>{{ booking.cat }}</td>
-            <td>{{ booking.cat_name }}</td>
-            <td>{{ booking.phone_number }}</td>
-            <td>{{ booking.total_price }}</td>
-            <td>
-              <a href="{% url 'confirm_booking_admin' booking.id %}" class="btn btn-sm btn-primary">ยืนยัน</a>
-            </td>
-            <td><a href="{% url 'cancel_booking_admin' booking.id %}" class="btn btn-sm btn-danger">ยกเลิก</a></td>
+            <td>{{ canceled_booking.id }}</td>
+            <td class="text-primary">{{ canceled_booking.room }}</td>
+            <td>{{ canceled_booking.customer.first_name }} {{ canceled_booking.customer.last_name }}</td>
+            <td>{{ canceled_booking.start_date }}</td>
+            <td>{{ canceled_booking.end_date }}</td>
+            <td>{{ canceled_booking.cat }}</td>
+            <td>{{ canceled_booking.cat_name }}</td>
+            <td>{{ canceled_booking.phone_number }}</td>
+            <td>{{ canceled_booking.total_price }}</td>
+            <td class="text-danger font-size-sm">{{ canceled_booking.reason_text }}</td>
           </tr>
           {% endfor %}
         </tbody>
@@ -53,10 +48,10 @@
     </div>
     {% else %}
     <div class="alert alert-warning mt-3" role="alert">
-      ไม่มีคำขอการจอง
+      ไม่มีประวัติการยกเลิกการจองคิว
     </div>
     {% endif %}
   </div>
 </div>
-
 {% endblock %}
+

@@ -17,13 +17,15 @@
         <thead class="thead-light">
           <tr>
             <th>ID</th>
-            <th>Room Number</th>
-            <th>Customer</th>
+            <th>ห้อง</th>
+            <th>ชื่อ-นามสกุล</th>
             <th>วันที่เข้าฝาก</th>
             <th>ฝากถึงวันที่</th>
+            <th>จำนวนแมว</th>
             <th>ชื่อแมว</th>
             <th>เบอร์ติดต่อ</th>
-            <th></th>
+            <th>ราคา/บาท</th>
+            <th>สถานะ</th>
           </tr>
         </thead>
         <tbody>
@@ -31,12 +33,15 @@
           <tr>
             <td>{{ booking.id }}</td>
             <td class="text-primary">{{ booking.room }}</td>
-            <td>{{ booking.customer_b }}</td>  
+            <td>{{ booking.customer_b.first_name }} {{ booking.customer_b.last_name }}</td>
             <td>{{ booking.start_date }}</td>
             <td>{{ booking.end_date }}</td>
+            <td>{{ booking.cat }}</td>
             <td>{{ booking.cat_name }}</td>
             <td>{{ booking.phone_number }}</td>
+            <td>{{ booking.total_price}}</td>
             <td>
+              <span class="badge badge-success">เช็คเอ้าสำเร็จ</span>
             </td>
           </tr>
           {% endfor %}

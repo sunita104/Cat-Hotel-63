@@ -3,7 +3,16 @@
 {% load static %}
 {% load crispy_forms_tags %}
 
-
+{% for message in messages %}
+<div class="container-fluid p-0">
+  <div class="alert {{ message.tags }} alert-dismissible" role="alert" >
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+      <span aria-hidden="true">×</span>
+    </button>
+    {{ message }}
+  </div>
+</div>
+{% endfor %}
 <form method="POST" action="">
     {% csrf_token %}
     <div class="container">
@@ -11,48 +20,53 @@
             <div class="row g-3">
                 <div class="col-12 mb-4">
                     <div class="col-12 mb-4">
-                        <h4>Room {{ one_room.room_number }}</h4>
+                        <h4>ห้อง {{ one_room.room_number }}</h4>
                         <span class="text-muted">{{ one_room.description }}</span>
+                        <p class="text-muted">จำนวนแมวที่รับสูงสุด : {{ one_room.cat}} ตัว</p>
                         <input type="hidden" name="room_number" value="{{ one_room.room_number }}">
                     </div>
                 </div>
                 <div class="col-lg-2 col-md-6 ml-3">
-                    <h5>Check-in Date</h5>
+                    <h5>เช็คอิน</h5>
                     <p class="text-primary">{{ check_in_date }}</p>
                     <input type="hidden" name="check_in_date" value="{{ check_in_date }}">
                 </div>
                 <div class="col-lg-6 col-md-12">
-                    <h5>Check-out Date</h5>
+                    <h5>เช็คเอาท์</h5>
                     <p class="text-primary">{{ check_out_date }}</p>
                     <input type="hidden" name="check_out_date" value="{{ check_out_date }}">
                 </div>
-                <div class="col-lg-6 col-md-12 ml-3">
-                    <input type="text" name="cat_name" class="form-control" placeholder="Cat Name" required>
+                <div class="col-lg-6 col-md-12 ml-3 mt-2">
+                    <input type="number" name="cat" class="form-control" placeholder="จำนวนแมว" required>
                 </div>
-                <div class="col-lg-5 col-md-10 ml-3">
-                    <input type="text" name="phone_number" class="form-control" placeholder="Phone Number" required>
+                <div class="col-lg-6 col-md-12 ml-3 mt-2">
+                    <p class="text-muted">หากมีแมวมากกว่า 1 ตัวให้ใส่ / คั่นชื่อแมว</p>
+                    <input type="text" name="cat_name" class="form-control" placeholder="ชื่อแมว" required>
                 </div>
-
-                <div class="col-12 mb-4 mt-4 ml-3">
-                    <h5>Total Price: {{ total_price }} baht</h5>
+                <div class="col-lg-6 col-md-12 ml-3 mt-2">
+                    <input type="text" name="phone_number" class="form-control" placeholder="เบอร์โทร" required>
+                </div>
+                <div class="col-12 mb-4 mt-4 ml-3 mt-2">
+                    <h5>ราคารวม: ฿{{ total_price }} บาท</h5>
                     <input type="hidden" name="total_price" value="{{ total_price }}">
                 </div>
 
                 <div class="col-12 mt-4 ml-3">
-                    <a class="btn btn-secondary text-uppercase" href="{% url 'search_available_rooms' %}">Cancel</a>
-                    <button type="submit" class="btn btn-primary text-uppercase">Confirm Booking <i class="fa fa-plane ms-3"></i></button>
+                    <a class="btn btn-secondary text-uppercase" href="{% url 'search_available_rooms' %}">ยกเลิก</a>
+                    <button type="submit" class="btn btn-primary text-uppercase">ยืนยันการจอง<i
+                            class="fa fa-plane ms-3"></i></button>
                 </div>
             </div>
         </div>
     </div>
     {% if errors %}
     <ul class="errorlist">
-      {% for field_errors in errors.values %}
+        {% for field_errors in errors.values %}
         {% for error in field_errors %}
-          <li>{{ error }}</li>
+        <li>{{ error }}</li>
         {% endfor %}
-      {% endfor %}
+        {% endfor %}
     </ul>
-  {% endif %}
+    {% endif %}
 </form>
 {% endblock %}

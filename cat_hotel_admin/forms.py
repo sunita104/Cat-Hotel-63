@@ -18,7 +18,7 @@ class ManageCatHotelForm(forms.ModelForm):
             'room_number': 'ห้อง',
             'description': 'รายละเอียด',
             'cat': 'จำนวนแมวที่รับได้สูงสุด',
-            'price': 'ราคา/บาท',
+            'price': 'ราคาต่อคืน/บาท',
             'image': 'รูปห้อง'
         }
         widgets = {
